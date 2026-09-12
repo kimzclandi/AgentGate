@@ -21,7 +21,7 @@
 | POST /api/agent | `{"task":"read-doc doc-1"}`，确定性单步 mock |
 | POST /api/agent/remote | `{"task":"读取 doc-1 文档"}`，仅显式配置模型时可用 |
 | GET /api/overview?offset=0 | 当前用户的运行/审批/审计/对话，每类每页 50 条，offset 上限 100000 |
-| GET /api/metrics | 当前进程 HTTP 请求总量/错误/累计延迟/并发；非完整 Prometheus 指标 |
+| GET /api/metrics | 当前进程 HTTP 请求总量/状态码 >=400 的响应数/累计延迟/并发；非完整 Prometheus 指标 |
 
 写入示例：
 
@@ -66,3 +66,5 @@ make run
 本地依赖错误为 503 local_model_unavailable，不暴露模型响应正文；审批未完成返回 409 approval_required。对话最多 9 次模型调用、8 次工具提案；单次模型等待最多 90 秒、一次驱动最多 240 秒。succeeded 表示执行流程结束，不是回答正确性的保证。会话及工具返回存于 SQLite；部署者需制定数据保留策略。
 
 分页 offset 缺省为 0，只接受范围内的十进制整数；格式错误或越界返回 400。overview 中对话和未执行审批的状态会结合运行终态展示，取消/撤销的动作不再显示为可审批。
+
+metrics 计数包括健康检查和静态资源请求；requests 包含当前进行中的请求，errors 在响应完成后计数，latency 为已完成请求累计时间，进程重启归零。不能用它代表业务成功率、模型正确率或 P95 延迟。

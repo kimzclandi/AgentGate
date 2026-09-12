@@ -4,6 +4,7 @@
 
 | 文件 | 验证范围 / 版本 |
 |---|---|
+| [review2-verification.txt](review2-verification.txt) | 第二轮故障注入与响应指标修复后的验证 |
 | [review-verification.txt](review-verification.txt) | 本次边界修复后的 Go、UI、文档、固定 HTTP 与扫描结果 |
 | [verification-output.txt](verification-output.txt)、[e2e-output.txt](e2e-output.txt)、[clean-start-output.txt](clean-start-output.txt) | 初始版本的 20 个 Go 测试与 22 项 HTTP 检查；非当前测试计数 |
 | [static-output.txt](static-output.txt)、[vulnerability-output.txt](vulnerability-output.txt) | 初始静态检查与依赖告警详情，不能代替最新扫描 |

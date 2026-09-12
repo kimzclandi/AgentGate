@@ -44,8 +44,36 @@ func decode(w http.ResponseWriter, r *http.Request, v any) error {
 	}
 	return nil
 }
+
+type responseStatus struct {
+	http.ResponseWriter
+	status int
+}
+
+func (w *responseStatus) WriteHeader(status int) {
+	if w.status != 0 {
+		return
+	}
+	w.status = status
+	w.ResponseWriter.WriteHeader(status)
+}
+func (w *responseStatus) Write(b []byte) (int, error) {
+	if w.status == 0 {
+		w.WriteHeader(http.StatusOK)
+	}
+	return w.ResponseWriter.Write(b)
+}
+func (w *responseStatus) Unwrap() http.ResponseWriter { return w.ResponseWriter }
+
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
+	observed := &responseStatus{ResponseWriter: w}
+	w = observed
+	defer func() {
+		if observed.status >= 400 {
+			s.failures.Add(1)
+		}
+	}()
 	s.requests.Add(1)
 	defer func() { s.latency.Add(time.Since(start).Microseconds()) }()
 	w.Header().Set("X-Content-Type-Options", "nosniff")
@@ -204,7 +232,6 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if er != nil {
-		s.failures.Add(1)
 		status := 409
 		code := er.Error()
 		switch {

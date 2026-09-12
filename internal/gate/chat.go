@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 	"time"
 )
@@ -135,7 +137,12 @@ func (c *ChatService) fail(i Identity, s Chat, status string) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	s.Status = status
-	_ = c.save(ctx, i, s)
+	s.Pending = ""
+	s.Answer = ""
+	if err := c.save(ctx, i, s); err != nil {
+		// A full transcript can exceed the size limit. Still persist terminal metadata.
+		_, _ = c.engine.Store.DB.ExecContext(ctx, `UPDATE chats SET status=?,answer='',pending='' WHERE id=? AND tenant=? AND user_id=?`, status, s.ID, i.Tenant, i.User)
+	}
 	_ = c.engine.End(ctx, i, s.RunID, "failed")
 }
 func (c *ChatService) Resume(ctx context.Context, i Identity, id string) (Chat, error) {
@@ -239,10 +246,7 @@ func (c *ChatService) drive(ctx context.Context, i Identity, s Chat) (result Cha
 			s.Status = "succeeded"
 			stopWatch()
 			<-done
-			if err = c.engine.End(ctx, i, s.RunID, "succeeded"); err != nil {
-				return Chat{}, err
-			}
-			if err = c.save(ctx, i, s); err != nil {
+			if err = c.finish(ctx, i, s); err != nil {
 				return Chat{}, err
 			}
 			return publicChat(s), nil
@@ -279,4 +283,53 @@ func (c *ChatService) drive(ctx context.Context, i Identity, s Chat) (result Cha
 		}
 	}
 	return Chat{}, errors.New("step_limit")
+}
+
+// Commit the final answer and run success together. Failure must not leave a
+// successful run with a missing answer. Previously approved writes stay committed.
+func (c *ChatService) finish(ctx context.Context, i Identity, s Chat) error {
+	b, err := json.Marshal(s.Messages)
+	if err != nil || len(b) > 65536 {
+		return errors.New("conversation_limit")
+	}
+	tx, err := c.engine.Store.DB.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+	r, err := getRun(ctx, tx, s.RunID)
+	if err != nil {
+		return err
+	}
+	var enabled int
+	var tenant string
+	if err = tx.QueryRowContext(ctx, `SELECT enabled,tenant FROM principals WHERE id=?`, i.User).Scan(&enabled, &tenant); err != nil {
+		return err
+	}
+	if r.Status != "running" || r.User != i.User || r.Tenant != i.Tenant || tenant != i.Tenant || enabled != 1 || r.Expires <= time.Now().Unix() {
+		return ErrDenied
+	}
+	res, err := tx.ExecContext(ctx, `UPDATE chats SET messages=?,status='succeeded',answer=?,pending='',rounds=? WHERE id=? AND run_id=? AND tenant=? AND user_id=? AND status='working'`, string(b), s.Answer, s.Rounds, s.ID, s.RunID, i.Tenant, i.User)
+	if err != nil {
+		return err
+	}
+	n, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if n != 1 {
+		return errors.New("chat_not_resumable")
+	}
+	if _, err = tx.ExecContext(ctx, `UPDATE runs SET status='succeeded' WHERE id=?`, s.RunID); err != nil {
+		return err
+	}
+	if err = audit(ctx, tx, i, r, "", "run.end", "succeeded", "", ID(), 0); err != nil {
+		return err
+	}
+	if err = tx.Commit(); err != nil {
+		return err
+	}
+	// Cleanup failure does not undo a durable success; the sweeper retries it.
+	_ = os.RemoveAll(filepath.Join(c.engine.Root, s.RunID))
+	return nil
 }

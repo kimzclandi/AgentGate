@@ -2,7 +2,10 @@
 
 ## 当前审查版本
 
-本次修复见 [审查记录](REVIEW.md)。当前 28 个 Go 顶层测试、2 个 UI 状态测试，执行 test/race/vet、固定 HTTP 22 项、文档链接与扫描。最新原始输出见 [review-verification.txt](evidence/review-verification.txt)。UI 用 DOM/fetch 替身验证身份切换，并非浏览器布局测试。本次没有改变模型协议/提示，也未重跑模型质量测量；真实模型证据属于下文标明的历史提交。
+第二轮新增 3 个故障与观测测试，共 31 个 Go 顶层测试、2 个 UI 状态测试；最新输出见 [review2-verification.txt](evidence/review2-verification.txt)。最终成功的状态一致性采用数据库触发器故障注入验证，不以理想流程代替故障测试。未改变模型协议或提示，本轮未重新测量模型质量。
+
+
+本次修复见 [审查记录](REVIEW.md)。第一轮为 28 个 Go 顶层测试、2 个 UI 状态测试，执行 test/race/vet、固定 HTTP 22 项、文档链接与扫描。第一轮原始输出见 [review-verification.txt](evidence/review-verification.txt)。UI 用 DOM/fetch 替身验证身份切换，并非浏览器布局测试。本次没有改变模型协议/提示，也未重跑模型质量测量；真实模型证据属于下文标明的历史提交。
 
 ## 历史基线记录
 

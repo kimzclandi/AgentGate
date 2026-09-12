@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -206,5 +207,50 @@ func TestCancelledChatOverviewAndPagination(t *testing.T) {
 	fetched, err := c.Get(context.Background(), i, chat.ID)
 	if err != nil || fetched.Status != "cancelled" {
 		t.Fatal(fetched, err)
+	}
+}
+
+func TestChatFinalizationRollback(t *testing.T) {
+	e, _, i := fixture(t)
+	// Simulate a storage failure only at the final answer update.
+	_, err := e.Store.DB.Exec(`CREATE TRIGGER reject_answer BEFORE UPDATE ON chats WHEN NEW.status='succeeded' BEGIN SELECT RAISE(ABORT,'simulated persistence failure'); END`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	c := NewChatService(e, &scriptedModel{replies: []ChatMessage{{Role: "assistant", Content: "answer"}}})
+	if _, err = c.Start(context.Background(), i, "hello"); err == nil {
+		t.Fatal("failed persistence returned success")
+	}
+	var chatStatus, runStatus string
+	if err = e.Store.DB.QueryRow(`SELECT c.status,r.status FROM chats c JOIN runs r ON c.run_id=r.id`).Scan(&chatStatus, &runStatus); err != nil {
+		t.Fatal(err)
+	}
+	if chatStatus != "failed" || runStatus != "failed" {
+		t.Fatal(chatStatus, runStatus)
+	}
+	var successes int
+	if err = e.Store.DB.QueryRow(`SELECT count(*) FROM audit WHERE action='run.end' AND outcome='succeeded'`).Scan(&successes); err != nil {
+		t.Fatal(err)
+	}
+	if successes != 0 {
+		t.Fatal("false success audit", successes)
+	}
+}
+
+func TestChatOversizedFailureStillTerminates(t *testing.T) {
+	e, _, i := fixture(t)
+	c := NewChatService(e, &scriptedModel{replies: []ChatMessage{toolMessage("ticket_update", Params{"ticket-1", "new"})}})
+	s, err := c.Start(context.Background(), i, "update")
+	if err != nil {
+		t.Fatal(err)
+	}
+	s.Messages = append(s.Messages, ChatMessage{Role: "tool", Content: strings.Repeat("x", 65537)})
+	c.fail(i, s, "failed")
+	var status, pending string
+	if err = e.Store.DB.QueryRow(`SELECT status,pending FROM chats WHERE id=?`, s.ID).Scan(&status, &pending); err != nil {
+		t.Fatal(err)
+	}
+	if status != "failed" || pending != "" {
+		t.Fatal(status, pending)
 	}
 }
