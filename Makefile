@@ -17,3 +17,7 @@ bench:
 	GOMAXPROCS=4 go test ./internal/gate -run '^$$' -bench . -benchmem -benchtime=2s -count=3
 scan:
 	go run golang.org/x/vuln/cmd/govulncheck@v1.8.0 ./...
+
+.PHONY: local-demo
+local-demo: build
+	python3 scripts/local_demo.py

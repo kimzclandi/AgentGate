@@ -1,0 +1,181 @@
+go test -count=1 ./...
+?   	github.com/kimzclandi/agentgate/cmd/agentgate	[no test files]
+ok  	github.com/kimzclandi/agentgate/internal/gate	0.846s
+go test -race -count=1 ./...
+?   	github.com/kimzclandi/agentgate/cmd/agentgate	[no test files]
+ok  	github.com/kimzclandi/agentgate/internal/gate	2.543s
+go vet ./...
+mkdir -p bin
+go build -trimpath -o bin/agentgate ./cmd/agentgate
+python3 scripts/demo.py
+{
+  "mode": "deterministic mock; real HTTP + SQLite; no paid model",
+  "passed": 22,
+  "total": 22,
+  "cases": [
+    {
+      "task": "document read",
+      "expected_http": 200,
+      "actual_http": 200,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "ticket read",
+      "expected_http": 200,
+      "actual_http": 200,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "cross-tenant read",
+      "expected_http": 403,
+      "actual_http": 403,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "cross-tenant write",
+      "expected_http": 403,
+      "actual_http": 403,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "over-scoped delegation",
+      "expected_http": 403,
+      "actual_http": 403,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "client tenant rejected",
+      "expected_http": 400,
+      "actual_http": 400,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "write proposal",
+      "expected_http": 200,
+      "actual_http": 200,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "approval substitution",
+      "expected_http": 409,
+      "actual_http": 409,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "foreign approval",
+      "expected_http": 403,
+      "actual_http": 403,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "human approval",
+      "expected_http": 200,
+      "actual_http": 200,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "approval replay",
+      "expected_http": 409,
+      "actual_http": 409,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "write verification",
+      "expected_http": 200,
+      "actual_http": 200,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "short runtime",
+      "expected_http": 200,
+      "actual_http": 200,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "runtime timeout",
+      "expected_http": 403,
+      "actual_http": 403,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "cancel runtime create",
+      "expected_http": 200,
+      "actual_http": 200,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "cancel runtime",
+      "expected_http": 200,
+      "actual_http": 200,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "cancelled call",
+      "expected_http": 403,
+      "actual_http": 403,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "restart proposal",
+      "expected_http": 200,
+      "actual_http": 200,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "restart invalidates live run",
+      "expected_http": 403,
+      "actual_http": 403,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "revoke",
+      "expected_http": 200,
+      "actual_http": 200,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "revoked token",
+      "expected_http": 401,
+      "actual_http": 401,
+      "passed": true,
+      "failure": null
+    },
+    {
+      "task": "other tenant unaffected",
+      "expected_http": 200,
+      "actual_http": 200,
+      "passed": true,
+      "failure": null
+    }
+  ]
+}
+go run golang.org/x/vuln/cmd/govulncheck@v1.8.0 ./...
+=== Symbol Results ===
+
+No vulnerabilities found.
+
+Your code is affected by 0 vulnerabilities.
+This scan also found 0 vulnerabilities in packages you import and 1
+vulnerability in modules you require, but your code doesn't appear to call these
+vulnerabilities.
+Use '-show verbose' for more details.

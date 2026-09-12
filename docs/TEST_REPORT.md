@@ -15,7 +15,7 @@ make scan
 go run golang.org/x/vuln/cmd/govulncheck@v1.8.0 -show verbose ./...
 ```
 
-结果：20 个顶层 Go 测试（含多组子用例）通过；race 和 vet 通过；22/22 个固定 HTTP 验收检查通过。22/22 表示检查符合预期，包含有意触发的 401/403/409，**不是 100% 真实模型业务成功率**。
+基础版本结果：20 个顶层 Go 测试（含多组子用例）通过；race 和 vet 通过；22/22 个固定 HTTP 验收检查通过。22/22 表示检查符合预期，包含有意触发的 401/403/409，**不是 100% 真实模型业务成功率**。
 
 ## 风险覆盖
 
@@ -54,7 +54,7 @@ go run golang.org/x/vuln/cmd/govulncheck@v1.8.0 -show verbose ./...
 
 完整鉴权是 handler 内存 HTTP 测试，未含 socket/TLS/代理/公网。并发 ns/op 不是单请求 wall-clock 延迟，也不是 P95/P99。纯策略使用极小热数据集，不能外推复杂 ACL 或多租户生产策略。
 
-没有真实模型耗时、token/费用指标、远端连接器压测、长期存储/内存曲线或可用性 SLA。Docker 未运行（不执行任意代码，当前架构不依赖 Docker）。
+本地模型耗时见 LOCAL_MODEL.md；没有远端 token/费用指标、远端连接器压测、长期存储/内存曲线或可用性 SLA。Docker 未运行（不执行任意代码，当前架构不依赖 Docker）。
 
 ## 自审修复
 
@@ -71,6 +71,12 @@ go run golang.org/x/vuln/cmd/govulncheck@v1.8.0 -show verbose ./...
 
 ## GitHub Linux CI 跟进
 
-[首轮 CI](https://github.com/kimzclandi/AgentGate/actions/runs/34696797646) 的 make check / make demo 通过，旧 govulncheck v1.1.4 在 x/tools SSA 中出现 `panic: unexpected expr: *ast.KeyValueExpr`，不是一次成功扫描。已固定升级为官方 v1.8.0 并在本地复检；[第二轮 CI](https://github.com/kimzclandi/AgentGate/actions/runs/34697008208) 已全部通过：make check（test/race/vet）、make demo、make scan。验证提交为 a672ea3340a8115e5c4cdd64faa28d9ce57c577f；后续仅调整文档与界面文案。
+[首轮 CI](https://github.com/kimzclandi/AgentGate/actions/runs/34696797646) 的 make check / make demo 通过，旧 govulncheck v1.1.4 在 x/tools SSA 中出现 `panic: unexpected expr: *ast.KeyValueExpr`，不是一次成功扫描。已固定升级为官方 v1.8.0 并在本地复检；[第二轮 CI](https://github.com/kimzclandi/AgentGate/actions/runs/34697008208) 已全部通过：make check（test/race/vet）、make demo、make scan。验证提交为 a672ea3340a8115e5c4cdd64faa28d9ce57c577f；此处为本地多步 Agent 升级前的记录。
 
 干净目录构建与执行证据见 [clean-start-output.txt](clean-start-output.txt)。
+
+## 本地多步 Agent 升级
+
+新增 6 个顶层测试，共 26 个：多步读取、审批恢复及重放、拒绝与步骤限额、撤销取消推理、重启迁移、模型配置检查。确定性 ChatModel 替身用于覆盖这些边界，不计为真实推理验证。最新 test/race/vet 输出见 [local-development-tests.txt](local-development-tests.txt)。
+
+真实 qwen3:1.7b 的请求、工具轨迹和结果见 [local-model-results.json](local-model-results.json)，复现与失败记录见 [LOCAL_MODEL.md](LOCAL_MODEL.md)。控制台本轮验证了页面和新控件渲染；新增完整审批流程由真实 HTTP 测试验证，未声称新 UI 已完成点击级自动回归。

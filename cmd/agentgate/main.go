@@ -137,7 +137,14 @@ func run() error {
 			return e
 		}
 	}
-	server := &http.Server{Addr: addr, Handler: handler, ReadHeaderTimeout: 3 * time.Second, ReadTimeout: 6 * time.Second, WriteTimeout: 10 * time.Second, IdleTimeout: 30 * time.Second, MaxHeaderBytes: 16 << 10}
+	if model := os.Getenv("OLLAMA_MODEL"); model != "" {
+		local, e := gate.NewOllama(model)
+		if e != nil {
+			return e
+		}
+		handler.Chat = gate.NewChatService(engine, local)
+	}
+	server := &http.Server{Addr: addr, Handler: handler, ReadHeaderTimeout: 3 * time.Second, ReadTimeout: 6 * time.Second, WriteTimeout: 250 * time.Second, IdleTimeout: 30 * time.Second, MaxHeaderBytes: 16 << 10}
 	done := make(chan struct{})
 	go func() {
 		defer close(done)

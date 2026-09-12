@@ -13,6 +13,7 @@ import (
 )
 
 type Server struct {
+	Chat     *ChatService
 	Model    *ModelPlanner
 	Engine   *Engine
 	Auth     *Auth
@@ -81,7 +82,11 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		out(w, 429, map[string]string{"error": "capacity_exceeded"})
 		return
 	}
-	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+	timeout := 5 * time.Second
+	if r.URL.Path == "/api/chat" || r.URL.Path == "/api/chat/resume" {
+		timeout = 245 * time.Second
+	}
+	ctx, cancel := context.WithTimeout(r.Context(), timeout)
 	defer cancel()
 	ctx = context.WithValue(ctx, requestKey{}, request)
 	r = r.WithContext(ctx)
@@ -97,6 +102,38 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	var result any
 	switch r.Method + " " + r.URL.Path {
+	case "GET /api/capabilities":
+		result = map[string]any{"local_model": s.Chat != nil, "remote_model": s.Model != nil, "mock": true}
+	case "GET /api/chat":
+		if s.Chat == nil {
+			er = errors.New("local_model_unavailable")
+		} else {
+			result, er = s.Chat.Get(ctx, i, r.URL.Query().Get("id"))
+		}
+	case "POST /api/chat":
+		var b struct {
+			Task string `json:"task"`
+		}
+		er = decode(w, r, &b)
+		if er == nil {
+			if s.Chat == nil {
+				er = errors.New("local_model_unavailable")
+			} else {
+				result, er = s.Chat.Start(ctx, i, b.Task)
+			}
+		}
+	case "POST /api/chat/resume":
+		var b struct {
+			ID string `json:"chat_id"`
+		}
+		er = decode(w, r, &b)
+		if er == nil {
+			if s.Chat == nil {
+				er = errors.New("local_model_unavailable")
+			} else {
+				result, er = s.Chat.Resume(ctx, i, b.ID)
+			}
+		}
 	case "POST /api/agent/remote":
 		var b struct {
 			Task string `json:"task"`
@@ -176,6 +213,10 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			code = "access_denied"
 		case strings.HasPrefix(code, "invalid"):
 			status = 400
+		case code == "local_model_unavailable":
+			status = 503
+		case code == "chat_busy" || code == "chat_not_resumable" || code == "approval_required" || code == "step_limit" || code == "conversation_limit" || code == "write_must_be_single_call":
+			status = 409
 		case code == "model_result_unknown":
 			status = 502
 		case code == "capacity_exceeded":
@@ -211,6 +252,7 @@ func (s *Server) overview(ctx context.Context, i Identity, r *http.Request) (any
 	db := s.Engine.Store.DB
 	result := map[string]any{"identity": i, "tools": Registry(), "offset": offset, "limit": 50}
 	queries := map[string]string{
+		"chats":     `SELECT id,run_id,status,answer,pending FROM chats WHERE tenant=? AND user_id=? ORDER BY rowid DESC LIMIT 50 OFFSET ?`,
 		"runs":      `SELECT id,agent,status,expires,steps FROM runs WHERE tenant=? AND user_id=? ORDER BY rowid DESC LIMIT 50 OFFSET ?`,
 		"approvals": `SELECT id,run_id,tool,params,digest,status,expires FROM actions WHERE tenant=? AND user_id=? ORDER BY rowid DESC LIMIT 50 OFFSET ?`,
 		"audit":     `SELECT seq,at,request_id,agent,run_id,resource,action,policy_version,outcome,action_id FROM audit WHERE tenant=? AND user_id=? ORDER BY seq DESC LIMIT 50 OFFSET ?`,

@@ -16,6 +16,9 @@ import (
 //go:embed migrations/001_init.sql
 var migration string
 
+//go:embed migrations/002_chats.sql
+var chatMigration string
+
 type Store struct{ DB *sql.DB }
 
 func ID() string {
@@ -34,7 +37,7 @@ func Open(path string) (*Store, error) {
 	s := &Store{db}
 	ctx, c := context.WithTimeout(context.Background(), 10*time.Second)
 	defer c()
-	_, e = db.ExecContext(ctx, migration)
+	_, e = db.ExecContext(ctx, migration+"\n"+chatMigration)
 	if e != nil {
 		db.Close()
 		return nil, e

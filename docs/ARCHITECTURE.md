@@ -47,6 +47,7 @@ sequenceDiagram
 - `policy.go`：默认拒绝，检查角色、动作、Agent、资源所有者、租户、运行期限/步骤。`Evaluate` 为纯计算部分，`authorize` 在事务中加载真实属性。
 - `engine.go`：唯一公开业务入口，控制审批与副作用的原子状态变更。
 - `connectors.go`：两种资源类型的连接器契约。当前均使用真实 SQLite，未模拟第三方 SaaS。
+- `chat.go` / `ollama.go`：本地自然语言 → 工具提案 → 逐次授权 → 工具结果回传模型；写入暂停等待审批，恢复后继续生成回答。对话同租户同用户隔离。
 - `model.go`：可选外部规划器无 DB、用户凭证或审批接口；模型仅选择一个工具，不循环解析工具结果。
 - `http.go`：schema 等效的严格 Go 字段校验、请求大小、认证、有界并发、分页、错误映射与 HTTP request ID。
 
