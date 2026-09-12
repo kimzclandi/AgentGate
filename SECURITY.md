@@ -1,5 +1,7 @@
 # Security
 
-AgentGate is an educational engineering portfolio project, not a production-certified IAM system. Do not deploy development authentication on a public interface or commit keys, tokens, databases, or real tenant data.
+AgentGate enforces identity, delegation, resource authorization and approval checks for registered Agent tools. Read [the threat model](docs/THREAT_MODEL.md) for trust boundaries and remaining risks, and [the test report](docs/TEST_REPORT.md) for verification results.
 
-See docs/THREAT_MODEL.md and docs/TEST_REPORT.md for tested boundaries and outstanding work. Report non-sensitive reproduction steps through a GitHub issue; never include real credentials or private user data in a public report.
+Development authentication is restricted to loopback interfaces. Do not expose it publicly or commit keys, tokens, databases, or private tenant data. External deployments require a configured identity provider, TLS, secret management, quotas and an audit retention policy.
+
+Report non-sensitive reproduction steps through a GitHub issue. Never include real credentials or private user data in a public report.

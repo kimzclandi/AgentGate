@@ -67,8 +67,10 @@ go run golang.org/x/vuln/cmd/govulncheck@v1.8.0 -show verbose ./...
 
 ## 未验证 / 未完成
 
-外部模型与真实 IdP 缺配置/凭证，不发起付费调用；OAuth 服务身份、生产 Web 登录与部署、远端写 unknown 对账、任意代码隔离未实现。CI 配置随仓库提供，GitHub 运行结果需单独确认，不能用本地通过代替远端 CI。
+外部模型与真实 IdP 缺配置/凭证，不发起付费调用；OAuth 服务身份、生产 Web 登录与部署、远端写 unknown 对账、任意代码隔离未实现。GitHub Linux CI 已独立验证通过，详见下文。
 
 ## GitHub Linux CI 跟进
 
-[首轮 CI](https://github.com/kimzclandi/AgentGate/actions/runs/34696797646) 的 make check / make demo 通过，旧 govulncheck v1.1.4 在 x/tools SSA 中出现 `panic: unexpected expr: *ast.KeyValueExpr`，不是一次成功扫描。已固定升级为官方 v1.8.0 并在本地复检；远端重新验证结果另行记录。
+[首轮 CI](https://github.com/kimzclandi/AgentGate/actions/runs/34696797646) 的 make check / make demo 通过，旧 govulncheck v1.1.4 在 x/tools SSA 中出现 `panic: unexpected expr: *ast.KeyValueExpr`，不是一次成功扫描。已固定升级为官方 v1.8.0 并在本地复检；[第二轮 CI](https://github.com/kimzclandi/AgentGate/actions/runs/34697008208) 已全部通过：make check（test/race/vet）、make demo、make scan。验证提交为 a672ea3340a8115e5c4cdd64faa28d9ce57c577f；后续仅调整文档与界面文案。
+
+干净目录构建与执行证据见 [clean-start-output.txt](clean-start-output.txt)。

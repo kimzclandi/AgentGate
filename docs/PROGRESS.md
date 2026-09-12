@@ -1,10 +1,10 @@
 # AgentGate 实施与验收记录
 
-## 初始诊断与授权
+## 项目状态
 
-2026-09-12：当前目录没有现有源码/Git/README/AGENTS.md。用户明确授权从零生成项目并发布 GitHub，随后指定当前已连接账号为发布目标、先前提供的 Lu-Ricardo-Y 为共同作者。最终目标：kimzclandi/AgentGate；双方署名，不虚构分工和提交历史。
+AgentGate 是 Go 多租户 Agent 身份与工具执行平台，仓库位于 kimzclandi/AgentGate，由 kimzclandi 与 Lu-Ricardo-Y 共同制作。采用单实例 Go 控制面、SQLite 文档与工单连接器、管理控制台和可选模型规划器。
 
-环境：最初没有 Go/gh。已从官方来源下载并校验 Go 1.27.1。Docker socket 不可用；本版不执行任意代码，不依赖容器。GitHub 仓库现已存在且写权限已确认。
+开发与验证环境：Go 1.27.1，macOS/arm64；GitHub CI 使用 Linux。当前仅执行内置工具，不依赖 Docker。
 
 ## 已实现且已验证
 
@@ -17,7 +17,7 @@
 - [x] 浏览器真实连接、读取、提案、确认、状态与审计显示。
 - [x] 20 个顶层 Go 测试，race、vet；固定 HTTP 集 22/22 检查符合预期。
 - [x] 0 可达漏洞；修复 go-jose；未调用 Windows 模块告警有判断记录。
-- [x] 三种独立口径 benchmark 与原始输出、完整技术/演示/面试文档。
+- [x] 三种独立口径 benchmark 与原始输出、技术与使用文档。
 - [x] 最终本地自审修复：token CLI 误恢复风险、独占锁、单步写任务终态、实际策略版本/request ID。
 
 ## 有实现但未经外部验证
@@ -27,14 +27,16 @@
 
 ## 本轮明确未实现（不标记为完成）
 
-服务身份 OAuth client-credentials、完整生产登录/部署、向量 RAG、任意代码沙箱、远端业务写入及 unknown 对账、多实例运行、策略编辑 API、完整 metrics/清理率/租户配额、不可篡改审计。原始完整需求中的这些扩展项仍有差距，当前应称为可运行面试展示 MVP，不能宣称全部生产能力达标。
+服务身份 OAuth client-credentials、完整生产登录/部署、向量 RAG、任意代码沙箱、远端业务写入及 unknown 对账、多实例运行、策略编辑 API、完整 metrics/清理率/租户配额、不可篡改审计。这些能力列入后续开发范围；当前版本的部署边界见威胁模型。
 
 ## 发布与续做
 
 - [x] 源码/文档发布到 kimzclandi/AgentGate 并核对远端。
 - [x] 更新 kimzclandi 个人主页导航，保留原有项目内容。
-- [ ] 检查远端 CI 结果。
+- [x] 检查远端 CI：Linux make check / make demo / make scan 全部通过。
 
 独立继续：先读本文件、TEST_REPORT 与 THREAT_MODEL。真实模型最小输入为提供商兼容 endpoint、允许主机、模型名和私下配置的 key；只在用户授权费用后运行固定任务。OIDC 最小输入为测试 issuer/client ID 和 subject 映射；补登录与服务身份后再进行部署评审。公开托管后端仍需另行确定运行环境，本轮不购买云资源。
 
-发布证据：代码提交 a9a754686490963e547f80fcbf66aeddd761d22d，个人主页提交 890e41a8f66f6640e487f9d32eda1218826e677c。首轮 Linux CI 测试/race/vet/demo 通过，但旧 govulncheck v1.1.4 的 SSA 解析崩溃；已升级到 v1.8.0，本地扫描通过，正在重新验证远端。
+发布证据：代码提交 a9a754686490963e547f80fcbf66aeddd761d22d，个人主页提交 890e41a8f66f6640e487f9d32eda1218826e677c。首轮 Linux CI 测试/race/vet/demo 通过，但旧 govulncheck v1.1.4 的 SSA 解析崩溃；已升级到 v1.8.0，本地扫描通过，远端第二轮已通过。
+
+最终远端证据：[CI 34697008208](https://github.com/kimzclandi/AgentGate/actions/runs/34697008208)，验证代码/工具配置提交 a672ea3340a8115e5c4cdd64faa28d9ce57c577f。后续仅调整文档与界面文案。
