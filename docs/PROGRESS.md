@@ -31,8 +31,10 @@
 
 ## 发布与续做
 
-- [ ] 源码/文档发布到 kimzclandi/AgentGate 并核对远端。
-- [ ] 更新 kimzclandi 个人主页导航，保留原有项目内容。
+- [x] 源码/文档发布到 kimzclandi/AgentGate 并核对远端。
+- [x] 更新 kimzclandi 个人主页导航，保留原有项目内容。
 - [ ] 检查远端 CI 结果。
 
 独立继续：先读本文件、TEST_REPORT 与 THREAT_MODEL。真实模型最小输入为提供商兼容 endpoint、允许主机、模型名和私下配置的 key；只在用户授权费用后运行固定任务。OIDC 最小输入为测试 issuer/client ID 和 subject 映射；补登录与服务身份后再进行部署评审。公开托管后端仍需另行确定运行环境，本轮不购买云资源。
+
+发布证据：代码提交 a9a754686490963e547f80fcbf66aeddd761d22d，个人主页提交 890e41a8f66f6640e487f9d32eda1218826e677c。首轮 Linux CI 测试/race/vet/demo 通过，但旧 govulncheck v1.1.4 的 SSA 解析崩溃；已升级到 v1.8.0，本地扫描通过，正在重新验证远端。
