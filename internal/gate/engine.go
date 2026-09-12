@@ -147,7 +147,7 @@ func (e *Engine) Propose(ctx context.Context, i Identity, c Call, request string
 	if er != nil {
 		return Action{}, er
 	}
-	body, pv, er := authorize(ctx, tx, i, r, t, c.Params.ResourceID)
+	body, pv, er := authorize(ctx, tx, i, r, t, c.Params.ResourceID, false)
 	if er != nil {
 		if x := audit(ctx, tx, i, Run{ID: c.RunID}, "", t.Action, "denied", "", request, 0); x != nil {
 			return Action{}, x
@@ -235,7 +235,7 @@ func (e *Engine) Confirm(ctx context.Context, i Identity, id, digest, request st
 	if er != nil || !t.SideEffect {
 		return Action{}, ErrDenied
 	}
-	_, pv, er := authorize(ctx, tx, i, r, t, a.Params.ResourceID)
+	_, pv, er := authorize(ctx, tx, i, r, t, a.Params.ResourceID, true)
 	if er != nil {
 		return Action{}, er
 	}

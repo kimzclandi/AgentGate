@@ -151,7 +151,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case "GET /api/tools":
 		result = Registry()
 	case "GET /api/metrics":
-		result = map[string]any{"requests": s.requests.Load(), "errors": s.failures.Load(), "request_latency_total_us": s.latency.Load(), "inflight": len(s.slots), "queue_capacity": 0, "note": "process-local HTTP totals; tenant business counters are in overview"}
+		result = map[string]any{"requests": s.requests.Load(), "errors": s.failures.Load(), "request_latency_total_us": s.latency.Load(), "inflight": len(s.slots), "queue_capacity": 0, "note": "process-local HTTP totals; overview exposes tenant-filtered records, not aggregate business counters"}
 	case "POST /api/runs":
 		var b struct {
 			Agent  string   `json:"agent"`
@@ -245,16 +245,20 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	out(w, 200, result)
 }
 func (s *Server) overview(ctx context.Context, i Identity, r *http.Request) (any, error) {
-	offset, _ := strconv.Atoi(r.URL.Query().Get("offset"))
-	if offset < 0 || offset > 100000 {
+	rawOffset := r.URL.Query().Get("offset")
+	if rawOffset == "" {
+		rawOffset = "0"
+	}
+	offset, err := strconv.Atoi(rawOffset)
+	if err != nil || offset < 0 || offset > 100000 {
 		return nil, errors.New("invalid_offset")
 	}
 	db := s.Engine.Store.DB
 	result := map[string]any{"identity": i, "tools": Registry(), "offset": offset, "limit": 50}
 	queries := map[string]string{
-		"chats":     `SELECT id,run_id,status,answer,pending FROM chats WHERE tenant=? AND user_id=? ORDER BY rowid DESC LIMIT 50 OFFSET ?`,
+		"chats":     `SELECT c.id,c.run_id,CASE WHEN r.status!='running' AND c.status!='succeeded' THEN r.status ELSE c.status END AS status,c.answer,c.pending FROM chats c JOIN runs r ON r.id=c.run_id WHERE c.tenant=? AND c.user_id=? ORDER BY c.rowid DESC LIMIT 50 OFFSET ?`,
 		"runs":      `SELECT id,agent,status,expires,steps FROM runs WHERE tenant=? AND user_id=? ORDER BY rowid DESC LIMIT 50 OFFSET ?`,
-		"approvals": `SELECT id,run_id,tool,params,digest,status,expires FROM actions WHERE tenant=? AND user_id=? ORDER BY rowid DESC LIMIT 50 OFFSET ?`,
+		"approvals": `SELECT a.id,a.run_id,a.tool,a.params,a.digest,CASE WHEN a.status='pending' AND r.status!='running' THEN r.status WHEN a.status='pending' AND a.expires<=unixepoch() THEN 'expired' ELSE a.status END AS status,a.expires FROM actions a JOIN runs r ON r.id=a.run_id WHERE a.tenant=? AND a.user_id=? ORDER BY a.rowid DESC LIMIT 50 OFFSET ?`,
 		"audit":     `SELECT seq,at,request_id,agent,run_id,resource,action,policy_version,outcome,action_id FROM audit WHERE tenant=? AND user_id=? ORDER BY seq DESC LIMIT 50 OFFSET ?`,
 	}
 	for name, q := range queries {

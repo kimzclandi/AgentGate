@@ -72,8 +72,8 @@ func getRun(ctx context.Context, tx *sql.Tx, id string) (Run, error) {
 	}
 	return r, nil
 }
-func authorize(ctx context.Context, tx *sql.Tx, i Identity, r Run, t Tool, res string) (string, int, error) {
-	if r.Audience != "agentgate-tools" || r.User != i.User || r.Tenant != i.Tenant || r.Status != "running" || r.Expires <= time.Now().Unix() || r.Steps >= 8 || !slices.Contains(r.Scopes, t.Action) {
+func authorize(ctx context.Context, tx *sql.Tx, i Identity, r Run, t Tool, res string, confirming bool) (string, int, error) {
+	if r.Audience != "agentgate-tools" || r.User != i.User || r.Tenant != i.Tenant || r.Status != "running" || r.Expires <= time.Now().Unix() || !stepBudgetAllows(r.Steps, confirming) || !slices.Contains(r.Scopes, t.Action) {
 		return "", 0, ErrDenied
 	}
 	var tenant, role, actions string
@@ -103,7 +103,7 @@ func authorize(ctx context.Context, tx *sql.Tx, i Identity, r Run, t Tool, res s
 	if tx.QueryRowContext(ctx, `SELECT version FROM policy WHERE id=1`).Scan(&pv) != nil {
 		return "", 0, ErrDenied
 	}
-	if !Evaluate(PolicyInput{i, r, t, role, owner, kind, scopes, enabled == 1, ae == 1, time.Now().Unix()}) {
+	if !evaluate(PolicyInput{i, r, t, role, owner, kind, scopes, enabled == 1, ae == 1, time.Now().Unix()}, confirming) {
 		return "", 0, ErrDenied
 	}
 	return body, pv, nil
@@ -121,6 +121,13 @@ type PolicyInput struct {
 	Now                       int64
 }
 
-func Evaluate(p PolicyInput) bool {
-	return p.UserEnabled && p.AgentEnabled && p.Run.User == p.Identity.User && p.Run.Tenant == p.Identity.Tenant && p.Run.Status == "running" && p.Run.Expires > p.Now && p.Run.Steps < 8 && p.Owner == p.Identity.User && p.Kind == p.Tool.Kind && roleAllows(p.Role, p.Tool.Action) && slices.Contains(p.Run.Scopes, p.Tool.Action) && slices.Contains(p.AgentScopes, p.Tool.Action)
+func stepBudgetAllows(steps int, confirming bool) bool {
+	return steps >= 0 && (steps < 8 || confirming && steps == 8)
+}
+
+func Evaluate(p PolicyInput) bool { return evaluate(p, false) }
+
+// Confirmation consumes the step reserved by its persisted proposal, not a new step.
+func evaluate(p PolicyInput, confirming bool) bool {
+	return p.UserEnabled && p.AgentEnabled && p.Run.User == p.Identity.User && p.Run.Tenant == p.Identity.Tenant && p.Run.Status == "running" && p.Run.Expires > p.Now && stepBudgetAllows(p.Run.Steps, confirming) && p.Owner == p.Identity.User && p.Kind == p.Tool.Kind && roleAllows(p.Role, p.Tool.Action) && slices.Contains(p.Run.Scopes, p.Tool.Action) && slices.Contains(p.AgentScopes, p.Tool.Action)
 }

@@ -210,7 +210,7 @@ func TestExpiryCancelCleanupAndLimits(t *testing.T) {
 					t.Fatal(x)
 				}
 			case "steps":
-				_, _ = e.Store.DB.Exec(`UPDATE runs SET steps=8`)
+				_, _ = e.Store.DB.Exec(`UPDATE runs SET steps=9`)
 			}
 			if _, x := e.Confirm(context.Background(), i, p.ID, p.Digest, ID()); x == nil {
 				t.Fatal("invalid run executed")
@@ -456,5 +456,35 @@ func TestConcurrentProposalAndCapacity(t *testing.T) {
 	}
 	if _, x := e.CreateRun(context.Background(), i, "assistant", []string{"document:read"}, 60); x == nil || x.Error() != "capacity_exceeded" {
 		t.Fatal(x)
+	}
+}
+
+func TestEighthStepApprovalUsesReservedBudget(t *testing.T) {
+	e, _, i := fixture(t)
+	r := newRun(t, e, i)
+	for n := 0; n < 7; n++ {
+		if _, err := e.Propose(context.Background(), i, Call{RunID: r.ID, Tool: "document.read", Params: Params{ResourceID: "doc-1"}}, ID()); err != nil {
+			t.Fatal(err)
+		}
+	}
+	a := proposal(t, e, i, r)
+	if _, err := e.Propose(context.Background(), i, Call{RunID: r.ID, Tool: "document.read", Params: Params{ResourceID: "doc-1"}}, ID()); err == nil {
+		t.Fatal("ninth step accepted")
+	}
+	if _, err := e.Confirm(context.Background(), i, a.ID, a.Digest, ID()); err != nil {
+		t.Fatal("reserved eighth write denied", err)
+	}
+	if _, err := e.Confirm(context.Background(), i, a.ID, a.Digest, ID()); err == nil {
+		t.Fatal("approval replay accepted")
+	}
+	var steps, version int
+	if err := e.Store.DB.QueryRow(`SELECT steps FROM runs WHERE id=?`, r.ID).Scan(&steps); err != nil {
+		t.Fatal(err)
+	}
+	if err := e.Store.DB.QueryRow(`SELECT version FROM resources WHERE id='ticket-1'`).Scan(&version); err != nil {
+		t.Fatal(err)
+	}
+	if steps != 8 || version != 2 {
+		t.Fatal(steps, version)
 	}
 }

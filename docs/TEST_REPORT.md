@@ -1,6 +1,12 @@
 # 测试与性能报告
 
-验证日期：2026-09-12。原始输出：[完整验证](verification-output.txt)、[HTTP 固定任务集](e2e-output.txt)、[benchmark](benchmark-output.txt)、[漏洞扫描详情](vulnerability-output.txt)。
+## 当前审查版本
+
+本次修复见 [审查记录](REVIEW.md)。当前 28 个 Go 顶层测试、2 个 UI 状态测试，执行 test/race/vet、固定 HTTP 22 项、文档链接与扫描。最新原始输出见 [review-verification.txt](evidence/review-verification.txt)。UI 用 DOM/fetch 替身验证身份切换，并非浏览器布局测试。本次没有改变模型协议/提示，也未重跑模型质量测量；真实模型证据属于下文标明的历史提交。
+
+## 历史基线记录
+
+验证日期：2026-09-12。原始输出：[完整验证](evidence/verification-output.txt)、[HTTP 固定任务集](evidence/e2e-output.txt)、[benchmark](evidence/benchmark-output.txt)、[漏洞扫描详情](evidence/vulnerability-output.txt)。
 
 ## 环境与复现
 
@@ -73,12 +79,12 @@ go run golang.org/x/vuln/cmd/govulncheck@v1.8.0 -show verbose ./...
 
 [首轮 CI](https://github.com/kimzclandi/AgentGate/actions/runs/34696797646) 的 make check / make demo 通过，旧 govulncheck v1.1.4 在 x/tools SSA 中出现 `panic: unexpected expr: *ast.KeyValueExpr`，不是一次成功扫描。已固定升级为官方 v1.8.0 并在本地复检；[第二轮 CI](https://github.com/kimzclandi/AgentGate/actions/runs/34697008208) 已全部通过：make check（test/race/vet）、make demo、make scan。验证提交为 a672ea3340a8115e5c4cdd64faa28d9ce57c577f；此处为本地多步 Agent 升级前的记录。
 
-干净目录构建与执行证据见 [clean-start-output.txt](clean-start-output.txt)。
+干净目录构建与执行证据见 [clean-start-output.txt](evidence/clean-start-output.txt)。
 
 ## 本地多步 Agent 升级
 
-新增 6 个顶层测试，共 26 个：多步读取、审批恢复及重放、拒绝与步骤限额、撤销取消推理、重启迁移、模型配置检查。确定性 ChatModel 替身用于覆盖这些边界，不计为真实推理验证。最新 test/race/vet 输出见 [local-development-tests.txt](local-development-tests.txt)。
+新增 6 个顶层测试，共 26 个：多步读取、审批恢复及重放、拒绝与步骤限额、撤销取消推理、重启迁移、模型配置检查。确定性 ChatModel 替身用于覆盖这些边界，不计为真实推理验证。该次 test/race/vet 输出见 [local-development-tests.txt](evidence/local-development-tests.txt)。
 
-真实 qwen3:1.7b 的请求、工具轨迹和结果见 [local-model-results.json](local-model-results.json)，复现与失败记录见 [LOCAL_MODEL.md](LOCAL_MODEL.md)。控制台本轮验证了页面和新控件渲染；新增完整审批流程由真实 HTTP 测试验证，未声称新 UI 已完成点击级自动回归。
+真实 qwen3:1.7b 的请求、工具轨迹和结果见 [local-model-results.json](evidence/local-model-results.json)，复现与失败记录见 [LOCAL_MODEL.md](LOCAL_MODEL.md)。控制台本轮验证了页面和新控件渲染；新增完整审批流程由真实 HTTP 测试验证，未声称新 UI 已完成点击级自动回归。
 
 本地 Agent 升级的 [GitHub Linux CI](https://github.com/kimzclandi/AgentGate/actions/runs/34698847056) 已通过：make check、make demo、make scan。验证代码提交 206abe464e1926e406713c19278700167d8e9bee。CI 不下载大模型；真实本地推理由 LOCAL_MODEL.md 所述本机验收提供证据。

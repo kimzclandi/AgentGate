@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"sync/atomic"
@@ -172,5 +173,38 @@ func TestLocalModelConfiguration(t *testing.T) {
 	cancel()
 	if _, x = o.Next(ctx, []ChatMessage{{Role: "user", Content: "hello"}}); x == nil {
 		t.Fatal("cancel ignored")
+	}
+}
+
+func TestCancelledChatOverviewAndPagination(t *testing.T) {
+	e, a, i := fixture(t)
+	c := NewChatService(e, &scriptedModel{replies: []ChatMessage{toolMessage("ticket_update", Params{"ticket-1", "new"})}})
+	chat, err := c.Start(context.Background(), i, "update")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = e.End(context.Background(), i, chat.RunID, "cancelled"); err != nil {
+		t.Fatal(err)
+	}
+	server := NewServer(e, a, nil)
+	for _, offset := range []string{"abc", "-1", "100001"} {
+		if _, err = server.overview(context.Background(), i, httptest.NewRequest("GET", "/api/overview?offset="+offset, nil)); err == nil {
+			t.Fatal("bad offset accepted", offset)
+		}
+	}
+	raw, err := server.overview(context.Background(), i, httptest.NewRequest("GET", "/api/overview", nil))
+	if err != nil {
+		t.Fatal(err)
+	}
+	overview := raw.(map[string]any)
+	for _, key := range []string{"chats", "approvals"} {
+		rows := overview[key].([]map[string]any)
+		if len(rows) != 1 || rows[0]["status"] != "cancelled" {
+			t.Fatal(key, rows)
+		}
+	}
+	fetched, err := c.Get(context.Background(), i, chat.ID)
+	if err != nil || fetched.Status != "cancelled" {
+		t.Fatal(fetched, err)
 	}
 }

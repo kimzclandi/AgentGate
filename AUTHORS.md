@@ -5,7 +5,7 @@ AgentGate 由以下两位作者共同制作：
 - [@kimzclandi](https://github.com/kimzclandi)
 - [@Lu-Ricardo-Y](https://github.com/Lu-Ricardo-Y)
 
-项目使用 AI 辅助开发。具体贡献通过提交与 Pull Request 记录。
+项目使用 AI 辅助开发。具体贡献通过实际提交与 Pull Request 记录。共同作者署名不等同于 GitHub 自动统计的 Contributors 列表；本文件不声称已经核实个人实现比例。
 
 ## 开源依赖
 

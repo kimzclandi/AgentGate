@@ -22,24 +22,31 @@ flowchart LR
 sequenceDiagram
  participant U as 已认证用户
  participant G as Go 控制面
- participant M as mock / 可选模型
+ participant M as Ollama 本地模型
  participant D as SQLite
- U->>G: 创建任务
- G->>M: 提出一个结构化工具调用
- M-->>G: 工具名与参数（不可信）
- G->>D: 创建受限运行 / 检查实时权限
- alt 文档或工单读取
+ U->>G: 自然语言任务
+ G->>D: 创建受限运行与对话
+ loop 最多 9 次模型调用 / 8 次工具提案
+ G->>M: 对话、工具定义及已完成结果
+ M-->>G: 工具调用或最终回答
+ alt 读取
  G->>D: 授权事务内读取并追加审计
- G-->>U: 数据与运行结果
- else 工单更新
- G->>D: 持久化参数摘要和待审批动作
- G-->>U: 参数预览、摘要、有效期
- U->>G: action_id + digest + 身份凭证
- G->>D: 同一事务复查权限、审批和运行
- G->>D: 写入工单 + 消耗审批 + 成功审计
- G-->>U: 更新成功，单步运行完成
+ D-->>G: 实际资源内容
+ else 写入
+ G->>D: 持久化待审批参数与摘要
+ G-->>U: 暂停，返回审批预览
+ U->>G: 确认 action_id + digest
+ G->>D: 事务内复查授权、写入、消耗审批、追加审计
+ G-->>U: 写入成功
+ U->>G: 恢复对话
+ G->>D: 核实原审批已成功
  end
+ end
+ G-->>U: 最终回答与可核查工具记录
 ```
+
+上述为本地多步流程。固定命令与远端兼容接口是单步入口；它们不执行该模型结果循环。写入成功与最终自然语言回答是两个阶段，后者失败不会回滚已经提交的工单更新。
+
 
 ## 模块责任
 
@@ -57,4 +64,4 @@ sequenceDiagram
 
 ## 本轮未采用
 
-无模型训练/微调、向量 RAG、MCP、消息队列、Kubernetes、多 Agent 或任意代码执行。没有原有仓库，无法声称保留了现成 Agent 能力。工程扩展应先解决真实场景，再引入独立 worker/outbox。
+无模型训练/微调、向量 RAG、MCP、消息队列、Kubernetes、多 Agent 或任意代码执行。工程扩展应先解决真实场景，再引入独立 worker/outbox。

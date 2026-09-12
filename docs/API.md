@@ -61,6 +61,8 @@ make run
 
 ## 本地对话状态
 
-返回 id、run_id、messages、status、answer、rounds，以及可选 pending_action_id。写入返回 awaiting_approval；前端先调用 approve，再调用 chat/resume。恢复前必须核实原审批已成功，不能用 resume 代替审批。重复恢复返回 409；状态可通过 GET 查询。运行总有效期 300 秒，审批等待也计入；超时需创建新任务，已经批准的写入不会回滚。
+返回 id、run_id、messages、status、answer、rounds，以及可选 pending_action_id。写入返回 awaiting_approval；前端先调用 approve，再调用 chat/resume。恢复前必须核实原审批已成功，不能用 resume 代替审批。重复恢复返回 409；状态可通过 GET 查询。运行总有效期 300 秒。每个审批有效期为创建后 120 秒与运行剩余时间的较小值；超时需创建新任务，已经批准的写入不会回滚。
 
 本地依赖错误为 503 local_model_unavailable，不暴露模型响应正文；审批未完成返回 409 approval_required。对话最多 9 次模型调用、8 次工具提案；单次模型等待最多 90 秒、一次驱动最多 240 秒。succeeded 表示执行流程结束，不是回答正确性的保证。会话及工具返回存于 SQLite；部署者需制定数据保留策略。
+
+分页 offset 缺省为 0，只接受范围内的十进制整数；格式错误或越界返回 400。overview 中对话和未执行审批的状态会结合运行终态展示，取消/撤销的动作不再显示为可审批。

@@ -21,3 +21,9 @@ scan:
 .PHONY: local-demo
 local-demo: build
 	python3 scripts/local_demo.py
+
+.PHONY: ui-test docs-check
+ui-test:
+	node --test scripts/ui.test.cjs
+docs-check:
+	python3 scripts/check_docs.py
