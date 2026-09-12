@@ -48,3 +48,5 @@ AgentGate 是 Go 多租户 Agent 身份与工具执行平台，仓库位于 kimz
 - 已实现并本地验证：固定 loopback 模型适配、持久对话/运行关联、多步读工具、写审批暂停/恢复、自然语言控制台和真实模型测试。
 
 - Ollama Metal 在受限环境启动失败，使用官方 llama-server CPU 环境配置后推理成功。真实固定任务验证与发现的模型错误见 LOCAL_MODEL.md；不将模拟测试结果作为真实模型质量。
+
+本地 Agent 升级的 [GitHub Linux CI](https://github.com/kimzclandi/AgentGate/actions/runs/34698847056) 已通过：make check、make demo、make scan。验证代码提交 206abe464e1926e406713c19278700167d8e9bee。CI 不下载大模型；真实本地推理由 LOCAL_MODEL.md 所述本机验收提供证据。

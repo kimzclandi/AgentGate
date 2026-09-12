@@ -80,3 +80,5 @@ go run golang.org/x/vuln/cmd/govulncheck@v1.8.0 -show verbose ./...
 新增 6 个顶层测试，共 26 个：多步读取、审批恢复及重放、拒绝与步骤限额、撤销取消推理、重启迁移、模型配置检查。确定性 ChatModel 替身用于覆盖这些边界，不计为真实推理验证。最新 test/race/vet 输出见 [local-development-tests.txt](local-development-tests.txt)。
 
 真实 qwen3:1.7b 的请求、工具轨迹和结果见 [local-model-results.json](local-model-results.json)，复现与失败记录见 [LOCAL_MODEL.md](LOCAL_MODEL.md)。控制台本轮验证了页面和新控件渲染；新增完整审批流程由真实 HTTP 测试验证，未声称新 UI 已完成点击级自动回归。
+
+本地 Agent 升级的 [GitHub Linux CI](https://github.com/kimzclandi/AgentGate/actions/runs/34698847056) 已通过：make check、make demo、make scan。验证代码提交 206abe464e1926e406713c19278700167d8e9bee。CI 不下载大模型；真实本地推理由 LOCAL_MODEL.md 所述本机验收提供证据。
