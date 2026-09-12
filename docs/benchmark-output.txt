@@ -1,0 +1,16 @@
+GOMAXPROCS=4 go test ./internal/gate -run '^$' -bench . -benchmem -benchtime=2s -count=3
+goos: darwin
+goarch: arm64
+pkg: github.com/kimzclandi/agentgate/internal/gate
+cpu: Apple M4
+BenchmarkPolicy-4                 	257313142	         9.336 ns/op	       0 B/op	       0 allocs/op
+BenchmarkPolicy-4                 	257432341	         9.322 ns/op	       0 B/op	       0 allocs/op
+BenchmarkPolicy-4                 	258006868	        10.03 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAuthenticatedRequest-4   	  137370	     15765 ns/op	   11665 B/op	     123 allocs/op
+BenchmarkAuthenticatedRequest-4   	  153632	     15723 ns/op	   11663 B/op	     123 allocs/op
+BenchmarkAuthenticatedRequest-4   	  154101	     15718 ns/op	   11664 B/op	     123 allocs/op
+BenchmarkAgentRun-4               	    5776	    458521 ns/op	   28472 B/op	     590 allocs/op
+BenchmarkAgentRun-4               	    5473	    450819 ns/op	   28478 B/op	     590 allocs/op
+BenchmarkAgentRun-4               	    5524	    451875 ns/op	   28464 B/op	     590 allocs/op
+PASS
+ok  	github.com/kimzclandi/agentgate/internal/gate	25.842s
