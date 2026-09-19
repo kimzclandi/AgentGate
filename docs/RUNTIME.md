@@ -31,7 +31,7 @@
 
 ## 若以后支持任意代码
 
-必须隔离 worker，非 root、只读基础 FS、受控 tmpfs、CPU/内存/PID 限额、默认无网络、禁宿主敏感挂载及 Docker socket，且验证容器退出和回收。本轮未实施此能力；当前环境 Docker socket 不可访问，也未声称完成容器测试。
+必须隔离 worker，非 root、只读基础 FS、受控 tmpfs、CPU/内存/PID 限额、默认无网络、禁宿主敏感挂载及 Docker socket，且验证容器退出和回收。当前未实现该能力，也没有容器隔离测试证据。
 
 ## 本地模型运行边界
 

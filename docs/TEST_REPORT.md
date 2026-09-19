@@ -1,11 +1,11 @@
 # 测试与性能报告
 
-## 当前审查版本
+## 2026-09-12 审查版本
 
-第二轮新增 3 个故障与观测测试，共 31 个 Go 顶层测试、2 个 UI 状态测试；最新输出见 [review2-verification.txt](evidence/review2-verification.txt)。最终成功的状态一致性采用数据库触发器故障注入验证，不以理想流程代替故障测试。未改变模型协议或提示，本轮未重新测量模型质量。
+第二轮新增 3 个故障与观测测试，共 31 个 Go 顶层测试、2 个 UI 状态测试；最新输出见 [review2-verification.txt](evidence/review2-verification.txt)。最终成功的状态一致性采用数据库触发器故障注入验证，不以理想流程代替故障测试。未改变模型协议或提示，该次验证未重新测量模型质量。
 
 
-本次修复见 [审查记录](REVIEW.md)。第一轮为 28 个 Go 顶层测试、2 个 UI 状态测试，执行 test/race/vet、固定 HTTP 22 项、文档链接与扫描。第一轮原始输出见 [review-verification.txt](evidence/review-verification.txt)。UI 用 DOM/fetch 替身验证身份切换，并非浏览器布局测试。本次没有改变模型协议/提示，也未重跑模型质量测量；真实模型证据属于下文标明的历史提交。
+对应修复见 [审查记录](REVIEW.md)。第一轮为 28 个 Go 顶层测试、2 个 UI 状态测试，执行 test/race/vet、固定 HTTP 22 项、文档链接与扫描。第一轮原始输出见 [review-verification.txt](evidence/review-verification.txt)。UI 用 DOM/fetch 替身验证身份切换，并非浏览器布局测试。该次修复没有改变模型协议/提示，也未重跑模型质量测量；真实模型证据属于下文标明的历史提交。
 
 ## 历史基线记录
 
@@ -13,7 +13,7 @@
 
 ## 环境与复现
 
-macOS 26.6.2（25G83），darwin/arm64，Go 1.27.1，Apple M4（Go benchmark 检测）。当前权限无法读取 sysctl 内存信息，不编造 RAM 规格。SQLite 真实临时磁盘库、WAL、单连接；初始 3 用户/1 Agent/4 资源，无授权缓存。运行/审计行随 benchmark 扩大，未做固定大型租户压测。
+macOS 26.6.2（25G83），darwin/arm64，Go 1.27.1，Apple M4（Go benchmark 检测）。该测试记录未取得 sysctl 内存信息，RAM 规格未纳入性能报告。SQLite 真实临时磁盘库、WAL、单连接；初始 3 用户/1 Agent/4 资源，无授权缓存。运行/审计行随 benchmark 扩大，未做固定大型租户压测。
 
 ```sh
 make check
@@ -47,15 +47,15 @@ go run golang.org/x/vuln/cmd/govulncheck@v1.8.0 -show verbose ./...
 
 ## 依赖扫描判断
 
-首次扫描发现 GO-2026-4945（go-jose v4.1.3），已升级到 v4.1.4 并复检。当前 0 个可达符号/导入包漏洞。
+首次扫描发现 GO-2026-4945（go-jose v4.1.3），已升级到 v4.1.4 并复检。2026-09-12 扫描记录为 0 个可达符号/导入包漏洞；这不是对后续漏洞数据库的持续保证。
 
-仍有模块级 GO-2026-5024：x/sys v0.37.0 的 Windows NewNTUnicodeString，修复版本 v0.44.0。当前仅支持/验证 macOS 与 Linux，不导入该 Windows 路径，因此报告为不可达，非本轮阻断项。未来支持 Windows 前应升级并补全替代 flock 的进程锁方案。不把“0 个可达漏洞”写成所有依赖不存在漏洞。
+仍有模块级 GO-2026-5024：x/sys v0.37.0 的 Windows NewNTUnicodeString，修复版本 v0.44.0。当前仅支持/验证 macOS 与 Linux，不导入该 Windows 路径，因此报告为不可达，不阻断该次受支持平台验证。未来支持 Windows 前应升级并补全替代 flock 的进程锁方案。不把“0 个可达漏洞”写成所有依赖不存在漏洞。
 
 ## 性能：三种独立口径
 
 `GOMAXPROCS=4`，每项 2 秒目标时长，连续 3 次。测试使用 Go testing.B 自适应迭代，非固定请求总数。
 
-| 测量 | 本轮范围 | 中位数 | 含义 |
+| 测量 | 测量范围 | 中位数 | 含义 |
 |---|---:|---:|---|
 | Evaluate 纯策略 | 9.322–10.03 ns/op | 9.336 ns/op | 内存属性、无 I/O，steps 在 0..8 循环，包含拒绝；0 分配 |
 | 完整鉴权 handler | 15,718–15,765 ns/op | 15,723 ns/op | httptest + JWT 验证 + 用户 DB 查询，4 个并发 worker 的摊销时间；约 63.6k op/s 聚合吞吐 |
@@ -88,6 +88,6 @@ go run golang.org/x/vuln/cmd/govulncheck@v1.8.0 -show verbose ./...
 
 新增 6 个顶层测试，共 26 个：多步读取、审批恢复及重放、拒绝与步骤限额、撤销取消推理、重启迁移、模型配置检查。确定性 ChatModel 替身用于覆盖这些边界，不计为真实推理验证。该次 test/race/vet 输出见 [local-development-tests.txt](evidence/local-development-tests.txt)。
 
-真实 qwen3:1.7b 的请求、工具轨迹和结果见 [local-model-results.json](evidence/local-model-results.json)，复现与失败记录见 [LOCAL_MODEL.md](LOCAL_MODEL.md)。控制台本轮验证了页面和新控件渲染；新增完整审批流程由真实 HTTP 测试验证，未声称新 UI 已完成点击级自动回归。
+真实 qwen3:1.7b 的请求、工具轨迹和结果见 [local-model-results.json](evidence/local-model-results.json)，复现与失败记录见 [LOCAL_MODEL.md](LOCAL_MODEL.md)。该次控制台验证覆盖了页面和新控件渲染；新增完整审批流程由真实 HTTP 测试验证，未声称新 UI 已完成点击级自动回归。
 
 本地 Agent 升级的 [GitHub Linux CI](https://github.com/kimzclandi/AgentGate/actions/runs/34698847056) 已通过：make check、make demo、make scan。验证代码提交 206abe464e1926e406713c19278700167d8e9bee。CI 不下载大模型；真实本地推理由 LOCAL_MODEL.md 所述本机验收提供证据。

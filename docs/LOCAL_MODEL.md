@@ -4,7 +4,7 @@
 
 ## 启动
 
-1. 安装 [Ollama](https://ollama.com/download)。本轮验证版本为 0.34.0。
+1. 安装 [Ollama](https://ollama.com/download)。2026-09-12 验证版本为 0.34.0。
 2. 独立终端运行 `OLLAMA_NO_CLOUD=1 OLLAMA_HOST=127.0.0.1:11434 ollama serve`。若已有 Ollama 服务，先从其原有启动方式停止，避免端口冲突。
 3. `ollama pull qwen3:1.7b`；模型约 1.36 GB，支持工具调用。下载完成后无需云端模型服务。
 4. 仓库根目录运行 `OLLAMA_MODEL=qwen3:1.7b make run`。
@@ -16,7 +16,7 @@
 
 ## CPU 兼容运行
 
-本轮 macOS 受限执行环境无法初始化 Metal command queue。Ollama 的 `num_gpu:0` 单独设置仍失败；针对本次 0.34.0 所带 llama-server，以下官方命令帮助中列出的环境参数成功关闭设备卸载。停止原 Ollama 服务，再运行：
+2026-09-12 的 macOS 测试环境无法初始化 Metal command queue。Ollama 的 `num_gpu:0` 单独设置仍失败；针对 0.34.0 所带 llama-server，以下官方命令帮助中列出的环境参数成功关闭设备卸载。停止原 Ollama 服务，再运行：
 
 ```sh
 OLLAMA_NO_CLOUD=1 OLLAMA_HOST=127.0.0.1:11434 \
@@ -44,7 +44,7 @@ OLLAMA_MODEL=qwen3:1.7b make local-demo
 - 最初 Metal 初始化失败，未作为成功推理记录；采用上述 CPU 设置后跑通。
 - 第一轮工具描述只有动作名，小模型曾用 document_read 查询 ticket，后端拒绝；另一次读错文档后回答工单不可用。
 - 补充工具说明后，多资源查询成功，但模型曾根据已有内容直接声称更新成功。进一步加入读写区别提示，并在独立初始数据上验证完整审批。提示词能改善行为，不能保证任何输入都正确。
-- 本轮固定任务通过不等于开放任务准确率。原始工具结果可核查；自然语言概括仍可能误译、遗漏或夸大。status=succeeded 仅表示流程结束。
+- 已记录的固定任务通过不等于开放任务准确率。原始工具结果可核查；自然语言概括仍可能误译、遗漏或夸大。status=succeeded 仅表示流程结束。
 - 小模型可完成文档/工单流程，当前没有联网搜索、向量 RAG、任意代码、自动任务分解评测或多 Agent 协作。
 - 本地服务为受信任依赖；敏感内容会进入本机模型及 SQLite 对话记录。模型权重、密钥、实际数据库不随源码发布。
 - 远端付费模型和真实 OIDC IdP 仍未完成外部集成验证。
