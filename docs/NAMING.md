@@ -1,25 +1,26 @@
-# Naming and compatibility
+# 项目名称与兼容性
 
-The public name remains **AgentGate** (`AgentGate`).
-Its display subtitle is **Agent 工具授权与审批**.
+项目展示名称：**AgentGate：面向 Agent 工具调用的授权与审批**。
 
-## Current checkout
+GitHub 仓库名：`AgentGate`。
+
+## 获取代码
 
 ```sh
 git clone https://github.com/kimzclandi/AgentGate.git
 cd AgentGate
 ```
 
-## Compatibility and historical records
+已有 checkout 可在仓库根目录更新 remote；本地目录是否改名不影响运行。
 
-Python distribution/import names, command-line entry points, Go module paths and protocol
-identifiers remain unchanged. Use the installation and run commands in the current README;
-a public rename does not require a package or database migration.
+```sh
+git remote set-url origin https://github.com/kimzclandi/AgentGate.git
+```
 
-Frozen protocols, manifests, source archives, measured outputs, dated reports and license
-notices retain their original text and hashes. Old names in those records identify the
-historical project and are not separate implementations. No experiment is rerun or rebranded
-as a new result. New public navigation uses the current names.
+## 兼容性与历史记录
 
+此次调整公开仓库名和项目展示名。Python 包名、import、CLI、Go module 路径和协议标识保持兼容，安装与运行命令以当前 README 为准。
 
-[GitHub repository rename behavior](https://docs.github.com/en/repositories/creating-and-managing-repositories/renaming-a-repository)
+冻结协议、manifest、源码快照、原始预测、实验报告与许可条款保持不变。历史文件中的旧名不是另一个项目；改名不产生新的实验结果。现有 Issue 和 PR 编号继续使用。
+
+[GitHub 仓库改名说明](https://docs.github.com/en/repositories/creating-and-managing-repositories/renaming-a-repository)

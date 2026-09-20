@@ -1,4 +1,4 @@
-# AgentGate · Agent 工具授权与审批
+# AgentGate：面向 Agent 工具调用的授权与审批
 
 ![Project wordmark](.github/project-header.svg)
 
