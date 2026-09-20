@@ -1,4 +1,4 @@
-# AgentGate
+# AgentGate · Agent 工具授权与审批
 
 ![Project wordmark](.github/project-header.svg)
 
@@ -121,3 +121,5 @@ scripts/             HTTP、真实模型、UI 状态与文档检查
 ## License
 
 项目代码许可证尚待共同作者决定；本次未新增授权。详见 [共同作者与依赖](AUTHORS.md) 和 [贡献指南](CONTRIBUTING.md)。
+
+[项目名称与兼容性说明 / Naming and compatibility](docs/NAMING.md)
