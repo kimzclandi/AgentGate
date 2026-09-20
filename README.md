@@ -1,6 +1,9 @@
 # AgentGate
 
+![Project wordmark](.github/project-header.svg)
+
 [![verify](https://github.com/kimzclandi/AgentGate/actions/workflows/ci.yml/badge.svg)](https://github.com/kimzclandi/AgentGate/actions/workflows/ci.yml)
+[![Stars](https://img.shields.io/github/stars/kimzclandi/AgentGate?style=flat)](https://github.com/kimzclandi/AgentGate/stargazers) [License status](#license)
 
 **用 Go 为 AI Agent 的文档读取和工单修改增加身份校验、资源权限与人工审批。**
 
@@ -10,7 +13,7 @@
 
 共同作者：[@kimzclandi](https://github.com/kimzclandi) · [@Lu-Ricardo-Y](https://github.com/Lu-Ricardo-Y)。[贡献与依赖说明](AUTHORS.md)
 
-## 当前能做什么
+## 功能特性 / Features
 
 | 能力 | 实现与边界 |
 |---|---|
@@ -23,14 +26,18 @@
 
 当前定位是**单实例 Agent 安全执行参考实现**。本地模型已验证，远端兼容接口仅支持单步规划。模型理解和概括仍可能出错，`succeeded` 表示流程完成，不代表答案已通过事实评测。
 
-## 运行真实本地 Agent
+## 快速开始 / Quick Start
 
 需要 Go 1.27.1、macOS 或 Linux，以及 [Ollama](https://ollama.com/download)。Go 安装见[官方说明](https://go.dev/doc/install)。首次模型下载需要网络和约 1.36 GB 磁盘空间，无需购买云端 API。
+
+### Installation / 安装
 
 ```sh
 git clone https://github.com/kimzclandi/AgentGate.git
 cd AgentGate
 ```
+
+### Usage / 使用示例
 
 终端一启动 Ollama（若已有服务，先按[本地指南](docs/LOCAL_MODEL.md)处理端口冲突）：
 
@@ -104,3 +111,13 @@ scripts/             HTTP、真实模型、UI 状态与文档检查
 - 了解边界：[威胁模型](docs/THREAT_MODEL.md) · [安全说明](SECURITY.md) · [贡献指南](CONTRIBUTING.md)
 
 尚未实现生产 Web 登录、OAuth 服务身份、多实例协调、向量 RAG、任意代码隔离和外部业务写入对账。GitHub 提供代码和文档，浏览者在线使用后端还需要独立部署；开发认证仅允许本机访问。
+
+## Contributing / 参与贡献
+
+[贡献指南](CONTRIBUTING.md) · [行为准则](CODE_OF_CONDUCT.md) · [结构与维护](docs/MAINTAINING.md)
+
+[反馈问题](https://github.com/kimzclandi/AgentGate/issues/new?template=bug_report.yml) · [建议功能](https://github.com/kimzclandi/AgentGate/issues/new?template=feature_request.yml)
+
+## License
+
+项目代码许可证尚待共同作者决定；本次未新增授权。详见 [共同作者与依赖](AUTHORS.md) 和 [贡献指南](CONTRIBUTING.md)。
