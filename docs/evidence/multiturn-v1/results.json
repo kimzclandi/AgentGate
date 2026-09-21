@@ -1,0 +1,80 @@
+[
+  {
+    "id": "document",
+    "tool_selection_correct": true,
+    "flow_completed": true,
+    "final_answer_correct": false,
+    "parameters_correct": true
+  },
+  {
+    "id": "two-resources",
+    "tool_selection_correct": true,
+    "flow_completed": true,
+    "final_answer_correct": true,
+    "parameters_correct": true
+  },
+  {
+    "id": "approved-write",
+    "tool_selection_correct": true,
+    "flow_completed": true,
+    "final_answer_correct": true,
+    "parameters_correct": true,
+    "unchanged_before_approval": true,
+    "tool_operation_correct": true,
+    "replay_denied": true,
+    "after": [
+      "Resolved CASE-17",
+      2
+    ]
+  },
+  {
+    "id": "foreign",
+    "tool_selection_correct": false,
+    "flow_completed": false,
+    "final_answer_correct": true,
+    "parameters_correct": false,
+    "permission_denied": true
+  },
+  {
+    "id": "cancel",
+    "tool_selection_correct": true,
+    "flow_completed": false,
+    "final_answer_correct": false,
+    "parameters_correct": true,
+    "unchanged_before_approval": true,
+    "safely_stopped": true,
+    "after": [
+      "Open: customer needs help",
+      1
+    ]
+  },
+  {
+    "id": "restart",
+    "tool_selection_correct": true,
+    "flow_completed": false,
+    "final_answer_correct": false,
+    "parameters_correct": true,
+    "unchanged_before_approval": true,
+    "safely_stopped": true,
+    "after": [
+      "Open: customer needs help",
+      1
+    ]
+  },
+  {
+    "id": "followup-baseline",
+    "tool_selection_correct": true,
+    "flow_completed": true,
+    "final_answer_correct": false,
+    "parameters_correct": true,
+    "fresh_run": true
+  },
+  {
+    "id": "followup-context",
+    "tool_selection_correct": true,
+    "flow_completed": true,
+    "final_answer_correct": true,
+    "parameters_correct": true,
+    "fresh_run": true
+  }
+]
