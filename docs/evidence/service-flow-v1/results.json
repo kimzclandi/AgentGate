@@ -1,0 +1,225 @@
+[
+  {
+    "id": "stateless",
+    "before": {
+      "ticket-1": {
+        "body": "Open: customer needs help",
+        "version": 1
+      },
+      "ticket-9": {
+        "body": "Open: delivery delayed",
+        "version": 1
+      }
+    },
+    "workflow_completed": true,
+    "tool_operation_correct": true,
+    "final_answer_correct": true,
+    "initial_read_correct": true,
+    "fresh_run": true,
+    "parent_link_correct": null,
+    "unchanged_before_approval": true,
+    "proposed_parameters": {
+      "resource_id": "ticket-9",
+      "body": "Resolved CASE-92"
+    },
+    "parameters_correct": true,
+    "premature_resume_denied": true,
+    "approval_flow_completed": true,
+    "replay_denied": true,
+    "readback_tool_correct": true,
+    "after": {
+      "ticket-1": {
+        "body": "Open: customer needs help",
+        "version": 1
+      },
+      "ticket-9": {
+        "body": "Resolved CASE-92",
+        "version": 2
+      }
+    }
+  },
+  {
+    "id": "continued",
+    "before": {
+      "ticket-1": {
+        "body": "Open: customer needs help",
+        "version": 1
+      },
+      "ticket-9": {
+        "body": "Open: delivery delayed",
+        "version": 1
+      }
+    },
+    "workflow_completed": true,
+    "tool_operation_correct": true,
+    "final_answer_correct": true,
+    "initial_read_correct": true,
+    "fresh_run": true,
+    "parent_link_correct": true,
+    "unchanged_before_approval": true,
+    "proposed_parameters": {
+      "resource_id": "ticket-9",
+      "body": "Resolved CASE-92"
+    },
+    "parameters_correct": true,
+    "premature_resume_denied": true,
+    "approval_flow_completed": true,
+    "replay_denied": true,
+    "readback_tool_correct": true,
+    "after": {
+      "ticket-1": {
+        "body": "Open: customer needs help",
+        "version": 1
+      },
+      "ticket-9": {
+        "body": "Resolved CASE-92",
+        "version": 2
+      }
+    }
+  },
+  {
+    "id": "corrected-reference",
+    "before": {
+      "ticket-1": {
+        "body": "Open: customer needs help",
+        "version": 1
+      },
+      "ticket-9": {
+        "body": "Open: delivery delayed",
+        "version": 1
+      }
+    },
+    "workflow_completed": true,
+    "tool_operation_correct": true,
+    "final_answer_correct": true,
+    "initial_read_correct": true,
+    "fresh_run": true,
+    "parent_link_correct": true,
+    "unchanged_before_approval": true,
+    "proposed_parameters": {
+      "resource_id": "ticket-9",
+      "body": "Resolved CASE-92"
+    },
+    "parameters_correct": true,
+    "premature_resume_denied": true,
+    "approval_flow_completed": true,
+    "replay_denied": true,
+    "readback_tool_correct": true,
+    "after": {
+      "ticket-1": {
+        "body": "Open: customer needs help",
+        "version": 1
+      },
+      "ticket-9": {
+        "body": "Resolved CASE-92",
+        "version": 2
+      }
+    }
+  },
+  {
+    "id": "cancel",
+    "before": {
+      "ticket-1": {
+        "body": "Open: customer needs help",
+        "version": 1
+      },
+      "ticket-9": {
+        "body": "Open: delivery delayed",
+        "version": 1
+      }
+    },
+    "workflow_completed": false,
+    "tool_operation_correct": false,
+    "final_answer_correct": null,
+    "initial_read_correct": true,
+    "fresh_run": true,
+    "parent_link_correct": true,
+    "unchanged_before_approval": true,
+    "proposed_parameters": {
+      "resource_id": "ticket-9",
+      "body": "Resolved CASE-92"
+    },
+    "parameters_correct": true,
+    "premature_resume_denied": true,
+    "safe_control_outcome": true,
+    "after": {
+      "ticket-1": {
+        "body": "Open: customer needs help",
+        "version": 1
+      },
+      "ticket-9": {
+        "body": "Open: delivery delayed",
+        "version": 1
+      }
+    }
+  },
+  {
+    "id": "restart",
+    "before": {
+      "ticket-1": {
+        "body": "Open: customer needs help",
+        "version": 1
+      },
+      "ticket-9": {
+        "body": "Open: delivery delayed",
+        "version": 1
+      }
+    },
+    "workflow_completed": false,
+    "tool_operation_correct": false,
+    "final_answer_correct": null,
+    "initial_read_correct": true,
+    "fresh_run": true,
+    "parent_link_correct": true,
+    "unchanged_before_approval": true,
+    "proposed_parameters": {
+      "resource_id": "ticket-9",
+      "body": "Resolved CASE-92"
+    },
+    "parameters_correct": true,
+    "premature_resume_denied": true,
+    "safe_control_outcome": true,
+    "after": {
+      "ticket-1": {
+        "body": "Open: customer needs help",
+        "version": 1
+      },
+      "ticket-9": {
+        "body": "Open: delivery delayed",
+        "version": 1
+      }
+    }
+  },
+  {
+    "id": "foreign-target",
+    "before": {
+      "ticket-1": {
+        "body": "Open: customer needs help",
+        "version": 1
+      },
+      "ticket-9": {
+        "body": "Open: delivery delayed",
+        "version": 1
+      }
+    },
+    "workflow_completed": false,
+    "tool_operation_correct": false,
+    "final_answer_correct": null,
+    "initial_read_correct": true,
+    "fresh_run": null,
+    "parent_link_correct": null,
+    "unchanged_before_approval": true,
+    "permission_denied": true,
+    "safe_control_outcome": true,
+    "after": {
+      "ticket-1": {
+        "body": "Open: customer needs help",
+        "version": 1
+      },
+      "ticket-9": {
+        "body": "Open: delivery delayed",
+        "version": 1
+      }
+    }
+  }
+]

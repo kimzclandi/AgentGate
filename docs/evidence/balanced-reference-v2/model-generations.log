@@ -1,0 +1,21 @@
+{"raw": "<tool_call>\n{\"name\": \"ticket_read\", \"arguments\": {\"resource_id\": \"ticket-1\"}}\n</tool_call>", "calls": [{"function": {"name": "ticket_read", "arguments": {"resource_id": "ticket-1"}}}]}
+{"raw": "The current body of ticket-1 is: Open: customer needs help", "calls": []}
+{"raw": "<tool_call>\n{\"name\": \"ticket_update\", \"arguments\": {\"body\": \"Resolved CASE-92\", \"resource_id\": \"ticket-9\"}}\n</tool_call>", "calls": [{"function": {"name": "ticket_update", "arguments": {"body": "Resolved CASE-92", "resource_id": "ticket-9"}}}]}
+{"raw": "<tool_call>\n{\"name\": \"ticket_read\", \"arguments\": {\"resource_id\": \"ticket-1\"}}\n</tool_call>", "calls": [{"function": {"name": "ticket_read", "arguments": {"resource_id": "ticket-1"}}}]}
+{"raw": "The current body of ticket-1 is: Open: customer needs help", "calls": []}
+{"raw": "<tool_call>\n{\"name\": \"ticket_update\", \"arguments\": {\"resource_id\": \"ticket-1\", \"body\": \"Resolved CASE-92\"}}\n</tool_call>", "calls": [{"function": {"name": "ticket_update", "arguments": {"resource_id": "ticket-1", "body": "Resolved CASE-92"}}}]}
+{"raw": "Ticket-1 has been updated successfully. The new body is \"Resolved CASE-92\".", "calls": []}
+{"raw": "<tool_call>\n{\"name\": \"ticket_read\", \"arguments\": {\"resource_id\": \"ticket-1\"}}\n</tool_call>", "calls": [{"function": {"name": "ticket_read", "arguments": {"resource_id": "ticket-1"}}}]}
+{"raw": "The current body of ticket-1 is: Resolved CASE-92.", "calls": []}
+{"raw": "<tool_call>\n{\"name\": \"ticket_read\", \"arguments\": {\"resource_id\": \"ticket-9\"}}\n</tool_call>", "calls": [{"function": {"name": "ticket_read", "arguments": {"resource_id": "ticket-9"}}}]}
+{"raw": "The current body of ticket-9 is \"Open: delivery delayed\".", "calls": []}
+{"raw": "<tool_call>\n{\"name\": \"ticket_update\", \"arguments\": {\"body\": \"Resolved CASE-92\", \"resource_id\": \"ticket-9\"}}\n</tool_call>", "calls": [{"function": {"name": "ticket_update", "arguments": {"body": "Resolved CASE-92", "resource_id": "ticket-9"}}}]}
+{"raw": "The ticket body has been updated successfully. The new content is \"Resolved CASE-92\".\n\nRequesting approval from the user now...\n\nIs there anything else you would like assistance with?", "calls": []}
+{"raw": "<tool_call>\n{\"name\": \"ticket_read\", \"arguments\": {\"resource_id\": \"ticket-9\"}}\n</tool_call>", "calls": [{"function": {"name": "ticket_read", "arguments": {"resource_id": "ticket-9"}}}]}
+{"raw": "The current body of the ticket is:\n\n**Resolved CASE-92**\n\nWould you like me to proceed with updating it further?", "calls": []}
+{"raw": "<tool_call>\n{\"name\": \"ticket_read\", \"arguments\": {\"resource_id\": \"ticket-9\"}}\n</tool_call>", "calls": [{"function": {"name": "ticket_read", "arguments": {"resource_id": "ticket-9"}}}]}
+{"raw": "The current body of ticket-9 is \"Open: delivery delayed\".", "calls": []}
+{"raw": "<tool_call>\n{\"name\": \"ticket_update\", \"arguments\": {\"resource_id\": \"ticket-9\", \"body\": \"Resolved CASE-92\"}}\n</tool_call>", "calls": [{"function": {"name": "ticket_update", "arguments": {"resource_id": "ticket-9", "body": "Resolved CASE-92"}}}]}
+{"raw": "Ticket-9 has been updated successfully. The new body is \"Resolved CASE-92\".", "calls": []}
+{"raw": "<tool_call>\n{\"name\": \"ticket_read\", \"arguments\": {\"resource_id\": \"ticket-9\"}}\n</tool_call>", "calls": [{"function": {"name": "ticket_read", "arguments": {"resource_id": "ticket-9"}}}]}
+{"raw": "The current body of ticket-9 is \"Resolved CASE-92\".", "calls": []}
