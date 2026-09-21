@@ -1,0 +1,21 @@
+{
+  "recorded_utc": "2026-09-21T20:14:14.364920+00:00",
+  "local_date": "2026-09-22",
+  "timezone": "Asia/Singapore",
+  "source_commit": "db726df85c5cb34397a54e8ee948c08bc8ec5d1b",
+  "source_tree": "70161e95cf2ed0ff1335f88aba102c71d9325be0",
+  "baseline_commit": "9ae776fd0a6a73e032b18d767300211161f61cf4",
+  "baseline_default_commit": "9ae776fd0a6a73e032b18d767300211161f61cf4",
+  "remote": "https://github.com/kimzclandi/AgentGate.git",
+  "original_checkout_clean": true,
+  "protected_files_checked": 46,
+  "protected_files_changed": [],
+  "environment": {
+    "os": "Darwin",
+    "release": "27.0.0",
+    "machine": "arm64",
+    "scope": "same host; reused installed dependencies, fresh isolated repository checkout"
+  },
+  "log_redaction": "Absolute home paths replaced with <USER_HOME>; raw logs kept locally. ANSI colors and trailing whitespace removed from public copies.",
+  "publication": "This receipt precedes evidence commit and draft PR; no default-branch merge."
+}

@@ -1,0 +1,13 @@
+test_denied_has_no_answer_score_or_db_claim (test_trajectory.TrajectoryTests.test_denied_has_no_answer_score_or_db_claim) ... ok
+test_extra_or_duplicate_tool_fails (test_trajectory.TrajectoryTests.test_extra_or_duplicate_tool_fails) ... ok
+test_followup_tools_are_scored_after_latest_user_only (test_trajectory.TrajectoryTests.test_followup_tools_are_scored_after_latest_user_only) ... ok
+test_historical_replay_denominators (test_trajectory.TrajectoryTests.test_historical_replay_denominators) ... ok
+test_missing_trace_rejected (test_trajectory.TrajectoryTests.test_missing_trace_rejected) ... ok
+test_partial_answer_does_not_pass_two_resource_task (test_trajectory.TrajectoryTests.test_partial_answer_does_not_pass_two_resource_task) ... ok
+test_result_id_coverage_required (test_trajectory.TrajectoryTests.test_result_id_coverage_required) ... ok
+test_wrong_argument_separate_from_tool_selection (test_trajectory.TrajectoryTests.test_wrong_argument_separate_from_tool_selection) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.001s
+
+OK
