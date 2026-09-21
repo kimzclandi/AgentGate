@@ -25,8 +25,12 @@ func TestContinueIsolationAndContext(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if first.RunID == second.RunID || first.ID == second.ID || len(m.seen) != 4 || m.seen[1].Content != "Remember ticket-1" {
+	if second.ParentID != first.ID || first.RunID == second.RunID || first.ID == second.ID || len(m.seen) != 4 || m.seen[1].Content != "Remember ticket-1" {
 		t.Fatal(second, m.seen)
+	}
+	loaded, err := c.Get(ctx, i, second.ID)
+	if err != nil || loaded.ParentID != first.ID {
+		t.Fatal("lost persisted parent", loaded, err)
 	}
 	if _, err = c.Continue(ctx, Identity{"bob", "beta", "operator"}, first.ID, "read"); err == nil {
 		t.Fatal("cross-tenant access")

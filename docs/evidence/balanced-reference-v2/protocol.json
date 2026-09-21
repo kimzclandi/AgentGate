@@ -1,0 +1,34 @@
+{
+  "version": "balanced-reference-v2",
+  "cases": [
+    {
+      "id": "stateless-ticket-1",
+      "context": false,
+      "target": "ticket-1"
+    },
+    {
+      "id": "continued-ticket-1",
+      "context": true,
+      "target": "ticket-1"
+    },
+    {
+      "id": "stateless-ticket-9",
+      "context": false,
+      "target": "ticket-9"
+    },
+    {
+      "id": "continued-ticket-9",
+      "context": true,
+      "target": "ticket-9"
+    }
+  ],
+  "followup": "Set the body of that ticket to \"Resolved CASE-92\". Request approval, then report the outcome.",
+  "expected_target": "ticket-9",
+  "expected_body": "Resolved CASE-92",
+  "model": "Qwen2.5-1.5B local Transformers CPU; real generated tool calls",
+  "hypothesis": "Persisted context resolves a non-default ticket and supports approved write plus actual read-back; stateless continuation can lose the referent.",
+  "success": "continued and corrected-reference complete with exact single write, fresh read-back and final body; all control probes preserve state",
+  "failure": "wrong target/body, no required tool, final answer without verified operation, unauthorized write, or control bypass; no reroll",
+  "scope": "exploratory balanced-target diagnostic after unbalanced baseline also succeeded; identical database and ambiguous followup across targets; not statistical accuracy; no model/prompt tuning",
+  "frozen_utc": "2026-09-21T14:29:53Z"
+}

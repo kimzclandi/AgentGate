@@ -2,6 +2,7 @@ package gate
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -12,6 +13,7 @@ import (
 )
 
 type Chat struct {
+	ParentID string        `json:"parent_chat_id,omitempty"`
 	ID       string        `json:"id"`
 	RunID    string        `json:"run_id"`
 	Messages []ChatMessage `json:"messages"`
@@ -51,6 +53,10 @@ func (c *ChatService) load(ctx context.Context, i Identity, id string) (Chat, er
 	e := c.engine.Store.DB.QueryRowContext(ctx, `SELECT id,run_id,messages,status,answer,pending,rounds FROM chats WHERE id=? AND tenant=? AND user_id=?`, id, i.Tenant, i.User).Scan(&s.ID, &s.RunID, &msgs, &s.Status, &s.Answer, &s.Pending, &s.Rounds)
 	if e != nil {
 		return s, ErrDenied
+	}
+	e = c.engine.Store.DB.QueryRowContext(ctx, `SELECT parent_id FROM chat_links WHERE child_id=? AND tenant=? AND user_id=?`, id, i.Tenant, i.User).Scan(&s.ParentID)
+	if e != nil && !errors.Is(e, sql.ErrNoRows) {
+		return Chat{}, e
 	}
 	if e = json.Unmarshal([]byte(msgs), &s.Messages); e != nil {
 		return s, e
@@ -98,12 +104,12 @@ func (c *ChatService) Continue(ctx context.Context, i Identity, id, task string)
 			history = append(history, message)
 		}
 	}
-	return c.start(ctx, i, task, history)
+	return c.start(ctx, i, task, history, id)
 }
 func (c *ChatService) Start(ctx context.Context, i Identity, task string) (Chat, error) {
-	return c.start(ctx, i, task, nil)
+	return c.start(ctx, i, task, nil, "")
 }
-func (c *ChatService) start(ctx context.Context, i Identity, task string, history []ChatMessage) (Chat, error) {
+func (c *ChatService) start(ctx context.Context, i Identity, task string, history []ChatMessage, parentID string) (Chat, error) {
 	if task == "" || len(task) > 4096 {
 		return Chat{}, errors.New("invalid_task")
 	}
@@ -121,7 +127,7 @@ func (c *ChatService) start(ctx context.Context, i Identity, task string, histor
 	if e != nil {
 		return Chat{}, e
 	}
-	s := Chat{ID: ID(), RunID: r.ID, Status: "working"}
+	s := Chat{ID: ID(), RunID: r.ID, Status: "working", ParentID: parentID}
 	fail := true
 	defer func() {
 		if fail {
@@ -154,8 +160,22 @@ func (c *ChatService) start(ctx context.Context, i Identity, task string, histor
 	if marshalErr != nil || len(b) > 49152 {
 		return Chat{}, errors.New("conversation_limit")
 	}
-	_, e = c.engine.Store.DB.ExecContext(ctx, `INSERT INTO chats(id,tenant,user_id,run_id,messages,status) VALUES(?,?,?,?,?,'working')`, s.ID, i.Tenant, i.User, r.ID, string(b))
+	tx, e := c.engine.Store.DB.BeginTx(ctx, nil)
 	if e != nil {
+		return Chat{}, e
+	}
+	defer tx.Rollback()
+	_, e = tx.ExecContext(ctx, `INSERT INTO chats(id,tenant,user_id,run_id,messages,status) VALUES(?,?,?,?,?,'working')`, s.ID, i.Tenant, i.User, r.ID, string(b))
+	if e != nil {
+		return Chat{}, e
+	}
+	if parentID != "" {
+		_, e = tx.ExecContext(ctx, `INSERT INTO chat_links(child_id,parent_id,tenant,user_id) VALUES(?,?,?,?)`, s.ID, parentID, i.Tenant, i.User)
+		if e != nil {
+			return Chat{}, e
+		}
+	}
+	if e = tx.Commit(); e != nil {
 		return Chat{}, e
 	}
 	fail = false
