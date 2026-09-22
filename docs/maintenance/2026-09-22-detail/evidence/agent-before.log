@@ -1,0 +1,97 @@
+test_empty_or_string_quote_rubric_cannot_vacuously_pass (test_trajectory_contract.EvidenceContractTests.test_empty_or_string_quote_rubric_cannot_vacuously_pass) ...
+  test_empty_or_string_quote_rubric_cannot_vacuously_pass (test_trajectory_contract.EvidenceContractTests.test_empty_or_string_quote_rubric_cannot_vacuously_pass) (quotes=[]) ... FAIL
+  test_empty_or_string_quote_rubric_cannot_vacuously_pass (test_trajectory_contract.EvidenceContractTests.test_empty_or_string_quote_rubric_cannot_vacuously_pass) (quotes=['']) ... FAIL
+  test_empty_or_string_quote_rubric_cannot_vacuously_pass (test_trajectory_contract.EvidenceContractTests.test_empty_or_string_quote_rubric_cannot_vacuously_pass) (quotes='Open: customer needs help') ... FAIL
+test_forbidden_error_must_be_permission_denial (test_trajectory_contract.EvidenceContractTests.test_forbidden_error_must_be_permission_denial) ... FAIL
+test_server_failure_is_not_expected_stop (test_trajectory_contract.EvidenceContractTests.test_server_failure_is_not_expected_stop) ...
+  test_server_failure_is_not_expected_stop (test_trajectory_contract.EvidenceContractTests.test_server_failure_is_not_expected_stop) (name='cancel') ... FAIL
+  test_server_failure_is_not_expected_stop (test_trajectory_contract.EvidenceContractTests.test_server_failure_is_not_expected_stop) (name='restart') ... FAIL
+test_swapped_task_evidence_is_rejected (test_trajectory_contract.EvidenceContractTests.test_swapped_task_evidence_is_rejected) ... FAIL
+test_unrelated_http_error_is_not_expected_stop (test_trajectory_contract.EvidenceContractTests.test_unrelated_http_error_is_not_expected_stop) ... FAIL
+test_unrelated_persisted_chat_is_rejected (test_trajectory_contract.EvidenceContractTests.test_unrelated_persisted_chat_is_rejected) ... FAIL
+
+======================================================================
+FAIL: test_empty_or_string_quote_rubric_cannot_vacuously_pass (test_trajectory_contract.EvidenceContractTests.test_empty_or_string_quote_rubric_cannot_vacuously_pass) (quotes=[])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/tests/test_trajectory_contract.py", line 34, in test_empty_or_string_quote_rubric_cannot_vacuously_pass
+    with self.assertRaises(ValueError):module.score(case,raw)
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_empty_or_string_quote_rubric_cannot_vacuously_pass (test_trajectory_contract.EvidenceContractTests.test_empty_or_string_quote_rubric_cannot_vacuously_pass) (quotes=[''])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/tests/test_trajectory_contract.py", line 34, in test_empty_or_string_quote_rubric_cannot_vacuously_pass
+    with self.assertRaises(ValueError):module.score(case,raw)
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_empty_or_string_quote_rubric_cannot_vacuously_pass (test_trajectory_contract.EvidenceContractTests.test_empty_or_string_quote_rubric_cannot_vacuously_pass) (quotes='Open: customer needs help')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/tests/test_trajectory_contract.py", line 34, in test_empty_or_string_quote_rubric_cannot_vacuously_pass
+    with self.assertRaises(ValueError):module.score(case,raw)
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_forbidden_error_must_be_permission_denial (test_trajectory_contract.EvidenceContractTests.test_forbidden_error_must_be_permission_denial)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/tests/test_trajectory_contract.py", line 29, in test_forbidden_error_must_be_permission_denial
+    self.assertFalse(module.score(case,raw)['permission_denied'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_server_failure_is_not_expected_stop (test_trajectory_contract.EvidenceContractTests.test_server_failure_is_not_expected_stop) (name='cancel')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/tests/test_trajectory_contract.py", line 23, in test_server_failure_is_not_expected_stop
+    self.assertFalse(module.score(case,raw)['expected_stop_http'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_server_failure_is_not_expected_stop (test_trajectory_contract.EvidenceContractTests.test_server_failure_is_not_expected_stop) (name='restart')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/tests/test_trajectory_contract.py", line 23, in test_server_failure_is_not_expected_stop
+    self.assertFalse(module.score(case,raw)['expected_stop_http'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_swapped_task_evidence_is_rejected (test_trajectory_contract.EvidenceContractTests.test_swapped_task_evidence_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/tests/test_trajectory_contract.py", line 37, in test_swapped_task_evidence_is_rejected
+    with self.assertRaises(ValueError):module.score(case,raw)
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_unrelated_http_error_is_not_expected_stop (test_trajectory_contract.EvidenceContractTests.test_unrelated_http_error_is_not_expected_stop)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/tests/test_trajectory_contract.py", line 26, in test_unrelated_http_error_is_not_expected_stop
+    self.assertFalse(module.score(case,raw)['expected_stop_http'])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_unrelated_persisted_chat_is_rejected (test_trajectory_contract.EvidenceContractTests.test_unrelated_persisted_chat_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/tests/test_trajectory_contract.py", line 40, in test_unrelated_persisted_chat_is_rejected
+    with self.assertRaises(ValueError):module.score(case,raw)
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+FAILED (failures=9)
