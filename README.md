@@ -110,3 +110,5 @@ scripts/             HTTP、真实模型、UI 状态与文档检查
 [2026-09-22 implementation and verification](docs/maintenance/2026-09-22/README.md)
 
 [2026-09-22 detail review and regression fixes](docs/maintenance/2026-09-22-detail/README.md)
+
+Further review: [2026-09-22 evidence and export hardening](docs/maintenance/2026-09-22-readiness/README.md).

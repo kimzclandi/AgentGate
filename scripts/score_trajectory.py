@@ -143,7 +143,7 @@ def score(case, raw):
     return result
 
 
-def evaluate(folder):
+def read_protocol(folder):
     protocol = json.loads((folder / 'protocol.json').read_text())
     if not isinstance(protocol, dict) or protocol.get('version') != 'multiturn-v1':
         raise ValueError('Unsupported trajectory protocol')
@@ -160,6 +160,11 @@ def evaluate(folder):
             any(not isinstance(r, dict) or not isinstance(r.get('id'), str) for r in legacy) or
             Counter(r['id'] for r in legacy) != Counter(ids)):
         raise ValueError('Protocol/result coverage mismatch')
+    return protocol, cases
+
+
+def evaluate(folder):
+    protocol, cases = read_protocol(folder)
     rows = [score(c, json.loads((folder / (c['id'] + '.json')).read_text())) for c in cases]
     metrics = {}
     for key in ('tool_selection_exact', 'parameters_exact', 'flow_succeeded', 'permission_denied',
