@@ -5,3 +5,8 @@
 *.db-shm
 *.db-wal
 coverage.out
+
+# Local evaluation outputs; public evidence is copied explicitly into docs/.
+/work/
+__pycache__/
+*.py[cod]

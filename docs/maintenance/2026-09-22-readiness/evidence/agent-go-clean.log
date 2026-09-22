@@ -1,0 +1,4 @@
+?   	github.com/kimzclandi/agentgate/cmd/agentgate	[no test files]
+ok  	github.com/kimzclandi/agentgate/internal/gate	0.705s
+?   	github.com/kimzclandi/agentgate/cmd/agentgate	[no test files]
+ok  	github.com/kimzclandi/agentgate/internal/gate	2.459s

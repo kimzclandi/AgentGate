@@ -27,3 +27,7 @@ ui-test:
 	node --test scripts/ui.test.cjs
 docs-check:
 	python3 scripts/check_docs.py
+
+.PHONY: trajectory-test
+trajectory-test:
+	python3 -m unittest discover -s tests -v

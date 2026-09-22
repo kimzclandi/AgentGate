@@ -1,0 +1,197 @@
+{
+  "scorer_version": "trajectory-score-v3",
+  "execution_mode": "saved_output_replay",
+  "source_model": "Qwen2.5-1.5B-Instruct local Transformers CPU via loopback adapter (not historical Qwen3/Ollama)",
+  "data_kind": "synthetic task protocol; original output origin is declared by the source protocol",
+  "cases": [
+    {
+      "id": "document",
+      "tool_selection_exact": true,
+      "parameters_exact": true,
+      "followup_no_tools": null,
+      "flow_succeeded": true,
+      "recorded_chat_status": "succeeded",
+      "permission_denied": null,
+      "expected_stop_http": null,
+      "final_required_quotes_present": false,
+      "semantic_correctness": "not_assessed",
+      "write_state_correct": null,
+      "write_state_note": "Exported chats/HTTP do not independently prove persisted database state.",
+      "failure_categories": [
+        "answer_quote"
+      ]
+    },
+    {
+      "id": "two-resources",
+      "tool_selection_exact": true,
+      "parameters_exact": true,
+      "followup_no_tools": null,
+      "flow_succeeded": true,
+      "recorded_chat_status": "succeeded",
+      "permission_denied": null,
+      "expected_stop_http": null,
+      "final_required_quotes_present": true,
+      "semantic_correctness": "not_assessed",
+      "write_state_correct": null,
+      "write_state_note": "Exported chats/HTTP do not independently prove persisted database state.",
+      "failure_categories": []
+    },
+    {
+      "id": "approved-write",
+      "tool_selection_exact": true,
+      "parameters_exact": true,
+      "followup_no_tools": null,
+      "flow_succeeded": true,
+      "recorded_chat_status": "succeeded",
+      "permission_denied": null,
+      "expected_stop_http": null,
+      "final_required_quotes_present": true,
+      "semantic_correctness": "not_assessed",
+      "write_state_correct": null,
+      "write_state_note": "Exported chats/HTTP do not independently prove persisted database state.",
+      "failure_categories": []
+    },
+    {
+      "id": "foreign",
+      "tool_selection_exact": true,
+      "parameters_exact": true,
+      "followup_no_tools": null,
+      "flow_succeeded": false,
+      "recorded_chat_status": "failed",
+      "permission_denied": true,
+      "expected_stop_http": null,
+      "final_required_quotes_present": null,
+      "semantic_correctness": "not_assessed",
+      "write_state_correct": null,
+      "write_state_note": "Exported chats/HTTP do not independently prove persisted database state.",
+      "failure_categories": []
+    },
+    {
+      "id": "cancel",
+      "tool_selection_exact": true,
+      "parameters_exact": true,
+      "followup_no_tools": null,
+      "flow_succeeded": false,
+      "recorded_chat_status": "awaiting_approval",
+      "permission_denied": null,
+      "expected_stop_http": true,
+      "final_required_quotes_present": null,
+      "semantic_correctness": "not_assessed",
+      "write_state_correct": null,
+      "write_state_note": "Exported chats/HTTP do not independently prove persisted database state.",
+      "failure_categories": []
+    },
+    {
+      "id": "restart",
+      "tool_selection_exact": true,
+      "parameters_exact": true,
+      "followup_no_tools": null,
+      "flow_succeeded": false,
+      "recorded_chat_status": "interrupted",
+      "permission_denied": null,
+      "expected_stop_http": true,
+      "final_required_quotes_present": null,
+      "semantic_correctness": "not_assessed",
+      "write_state_correct": null,
+      "write_state_note": "Exported chats/HTTP do not independently prove persisted database state.",
+      "failure_categories": []
+    },
+    {
+      "id": "followup-baseline",
+      "tool_selection_exact": true,
+      "parameters_exact": true,
+      "followup_no_tools": true,
+      "flow_succeeded": true,
+      "recorded_chat_status": "succeeded",
+      "permission_denied": null,
+      "expected_stop_http": null,
+      "final_required_quotes_present": false,
+      "semantic_correctness": "not_assessed",
+      "write_state_correct": null,
+      "write_state_note": "Exported chats/HTTP do not independently prove persisted database state.",
+      "failure_categories": [
+        "answer_quote"
+      ]
+    },
+    {
+      "id": "followup-context",
+      "tool_selection_exact": true,
+      "parameters_exact": true,
+      "followup_no_tools": true,
+      "flow_succeeded": true,
+      "recorded_chat_status": "succeeded",
+      "permission_denied": null,
+      "expected_stop_http": null,
+      "final_required_quotes_present": true,
+      "semantic_correctness": "not_assessed",
+      "write_state_correct": null,
+      "write_state_note": "Exported chats/HTTP do not independently prove persisted database state.",
+      "failure_categories": []
+    }
+  ],
+  "metrics": {
+    "tool_selection_exact": {
+      "n": 8,
+      "passed": 8,
+      "rate": 1.0
+    },
+    "parameters_exact": {
+      "n": 8,
+      "passed": 8,
+      "rate": 1.0
+    },
+    "flow_succeeded": {
+      "n": 8,
+      "passed": 5,
+      "rate": 0.625
+    },
+    "permission_denied": {
+      "n": 1,
+      "passed": 1,
+      "rate": 1.0
+    },
+    "expected_stop_http": {
+      "n": 2,
+      "passed": 2,
+      "rate": 1.0
+    },
+    "final_required_quotes_present": {
+      "n": 5,
+      "passed": 3,
+      "rate": 0.6
+    },
+    "followup_no_tools": {
+      "n": 2,
+      "passed": 2,
+      "rate": 1.0
+    },
+    "write_state_correct": {
+      "n": 0,
+      "passed": 0,
+      "rate": null
+    }
+  },
+  "limitations": [
+    "HTTP stop is not proof of no database write.",
+    "Exact quote presence is not semantic answer accuracy.",
+    "No aggregate success rate combines controls, execution and answer quality.",
+    "Model origin is source-declared; replay performs no new inference.",
+    "Historical Qwen2.5 trajectories are separate from Qwen3/Ollama evidence."
+  ],
+  "receipt": {
+    "created_utc": "2026-09-22T04:38:26.166765+00:00",
+    "input_sha256": {
+      "protocol.json": "ebae34c441598cc9cfdcec0bf9386f534a44dc72e9d9fc29544d27615204415f",
+      "results.json": "b8f9bbfa81b35e8f18936b72a1ccc2bbd3cf6d404933825c03cfbc1e7a1079eb",
+      "document.json": "d9b42c144cde91314e9c46a4d742c054554f87f4409194b10ffe301d2c630f48",
+      "two-resources.json": "b7dc54554ce23f7fac31ef64000566a266657efb012bab00ff214c13175dfe00",
+      "approved-write.json": "e9ea22a677dd11e7dc48e8d358ad132879e9d5512322c253de3c00fd7f87baee",
+      "foreign.json": "6e7479f14134f204cdbf48731f02fbf1e2827b352bf1f3bec8453bc8445d9490",
+      "cancel.json": "0bbc546a248b5c33ed28dc1248d813ca60ebd5f9a8fe574a7be4dfcc6884cb99",
+      "restart.json": "c06ed0524153bfb027416d7fd07994f06035f3742c7908bba86f32e84930c099",
+      "followup-baseline.json": "cf907c6072bc0a15f1368139492110e7ab3ae88626c01a4bc07ba77803a2e9ee",
+      "followup-context.json": "c892e1cb005dba0b442b2bf6bb1c5661fd158048fc30ad589c4bda3ac650055f"
+    },
+    "scorer_sha256": "ef07387778b730584f9ecd78c6ed44cbb25b055c57430039448f9ed983e3c667"
+  }
+}

@@ -16,6 +16,9 @@ jobs:
         with:
           node-version: '22'
       - run: make ui-test docs-check
+      - run: make trajectory-test
+      - run: python3 scripts/score_trajectory.py docs/evidence/multiturn-v1 --output work/ci-trajectory
       - run: make check
       - run: make demo
+      - run: python3 scripts/state_demo.py --output work/ci-state
       - run: make scan

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/scripts/demo.py", line 56, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/scripts/demo.py", line 7, in main
+    sock=socket.socket();sock.bind(('127.0.0.1',0));port=sock.getsockname()[1];sock.close()
+                         ~~~~~~~~~^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted

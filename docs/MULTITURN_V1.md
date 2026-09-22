@@ -13,7 +13,7 @@ go build -o bin/agentgate ./cmd/agentgate
 python scripts/hf_local_bridge.py --snapshot "$QWEN_1_5B_SNAPSHOT"
 # In another terminal; requires a new output directory:
 python scripts/evaluate_multiturn.py --out work/new-multiturn-run
-python scripts/export_multiturn.py --source work/new-multiturn-run --out docs/evidence/new-multiturn-run
+python scripts/export_multiturn.py --source work/new-multiturn-run --out work/new-multiturn-export
 python scripts/verify_multiturn.py docs/evidence/multiturn-v1
 ```
 
@@ -28,3 +28,5 @@ The stateless follow-up returns an inability to answer; the continued follow-up 
 Five answer-bearing flows finish, but only three satisfy the strict final exact-quote criterion. In the document case the model preserves the meaning while changing the English full stop to Chinese punctuation: it fails exact quotation, not necessarily semantic understanding. The stateless follow-up is the substantive missing-context failure. For denial/cancellation/restart, final model answer is not applicable and recorded as null in `rescored.json`; expected control outcome is scored separately.
 
 `results.json` preserves the first runner scoring, which lacked returned tool messages for HTTP denial. `rescored.json` corrects that observation using persisted synthetic transcripts and separates null final answers. The original result is not overwritten. This is a small diagnostic, not an 8-case estimate of open-ended tool accuracy or production reliability. HTTP service/UI integration for the new endpoint beyond the evaluated client, multi-user scale and automatic interruption recovery remain unverified.
+
+Export only after the run stops. The exporter rejects missing/duplicate result IDs, opens SQLite read-only, and publishes a complete directory after independent scoring. New `scores.json` replaces the legacy `rescored.json`; historical exports remain unchanged. This is saved-output replay, not new inference or proof of database write correctness.

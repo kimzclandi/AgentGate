@@ -1,0 +1,14 @@
+F.........
+======================================================================
+FAIL: test_duplicate_followup_task_cannot_hide_earlier_tool_calls (test_trajectory_contract.EvidenceContractTests.test_duplicate_followup_task_cannot_hide_earlier_tool_calls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/tests/test_trajectory_contract.py", line 22, in test_duplicate_followup_task_cannot_hide_earlier_tool_calls
+    with self.assertRaises(ValueError):module.score(case,raw)
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.001s
+
+FAILED (failures=1)

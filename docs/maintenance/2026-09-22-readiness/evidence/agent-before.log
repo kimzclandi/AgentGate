@@ -1,0 +1,38 @@
+FFE
+======================================================================
+ERROR: test_shuffled_legacy_booleans_cannot_change_scores (test_export_contract.ExportTests.test_shuffled_legacy_booleans_cannot_change_scores)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/tests/test_export_contract.py", line 31, in test_shuffled_legacy_booleans_cannot_change_scores
+    scores=json.loads((self.out/'scores.json').read_text())
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py", line 787, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/work/tmp7_j8wftw/export/scores.json'
+
+======================================================================
+FAIL: test_missing_database_is_not_created (test_export_contract.ExportTests.test_missing_database_is_not_created)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/tests/test_export_contract.py", line 26, in test_missing_database_is_not_created
+    self.assertNotEqual(self.run_export().returncode,0);self.assertFalse(p.exists());self.assertFalse(self.out.exists())
+                                                        ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_missing_result_fails_without_partial_export (test_export_contract.ExportTests.test_missing_result_fails_without_partial_export)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Documents/Codex/2026-09-22/github-readme-id-a194498-1-2/work/AgentGate/tests/test_export_contract.py", line 23, in test_missing_result_fails_without_partial_export
+    self.assertNotEqual(self.run_export().returncode,0);self.assertFalse(self.out.exists())
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.144s
+
+FAILED (failures=2, errors=1)
