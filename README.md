@@ -108,3 +108,5 @@ scripts/             HTTP、真实模型、UI 状态与文档检查
 尚未实现生产 Web 登录、OAuth 服务身份、多实例协调、向量 RAG、任意代码隔离和外部业务写入对账。GitHub 提供代码和文档，浏览者在线使用后端还需要独立部署；开发认证仅允许本机访问。
 
 [2026-09-22 implementation and verification](docs/maintenance/2026-09-22/README.md)
+
+[2026-09-22 detail review and regression fixes](docs/maintenance/2026-09-22-detail/README.md)
