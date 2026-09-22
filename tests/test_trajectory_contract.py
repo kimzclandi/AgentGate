@@ -15,6 +15,11 @@ def load(name):
     return copy.deepcopy(CASES[name]),json.loads((FOLDER/(name+'.json')).read_text())
 
 class EvidenceContractTests(unittest.TestCase):
+    def test_duplicate_followup_task_cannot_hide_earlier_tool_calls(self):
+        case = next(c for c in CASES.values() if c.get('followup'))
+        case,raw=load(case['id'])
+        raw['persisted_chats'][-1]['messages'].append({'role':'user','content':case['followup']})
+        with self.assertRaises(ValueError):module.score(case,raw)
     def test_server_failure_is_not_expected_stop(self):
         for name in ('cancel','restart'):
             with self.subTest(name=name):

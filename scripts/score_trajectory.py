@@ -121,9 +121,9 @@ def score(case, raw):
     if case.get('followup'):
         messages = final['messages']
         starts = [i for i, m in enumerate(messages) if m.get('role') == 'user' and m.get('content') == case['followup']]
-        if not starts:
-            raise ValueError('Missing follow-up task in persisted messages')
-        followup_tools = not any(m.get('tool_calls') for m in messages[starts[-1]+1:])
+        if len(starts) != 1:
+            raise ValueError('Ambiguous or missing follow-up task in persisted messages')
+        followup_tools = not any(m.get('tool_calls') for m in messages[starts[0]+1:])
     result = dict(id=case['id'], tool_selection_exact=selected, parameters_exact=parameters,
                   followup_no_tools=followup_tools,
                   flow_succeeded=final['status'] == 'succeeded', recorded_chat_status=final['status'],

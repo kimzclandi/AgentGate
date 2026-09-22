@@ -20,3 +20,5 @@ Expected: tests exit 0; replay and rebuild pass historical contracts. Baseline f
 Export requires a completed, quiescent run. Tests reconstruct synthetic SQLite from saved public traces; no new inference. Cross-database concurrent snapshots and persisted write-state correctness remain unproved. Joint authorship and single-instance prototype scope are unchanged.
 
 No new training, human semantic annotation, model-quality uplift or deployment is claimed. For resume mapping and interview questions, see the existing 2026-09-22 maintenance handoff; this addendum changes reliability evidence only.
+
+Follow-up scoring additionally rejects multiple occurrences of the follow-up user task, preventing a later duplicate from hiding earlier tool calls. This rubric covers one follow-up per case, not arbitrary repeated conversations.
