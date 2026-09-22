@@ -9,9 +9,6 @@ import hashlib
 import json
 from pathlib import Path
 import re
-import sys
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from state_evidence import score_state
 
 TOOLS = {'document_read', 'ticket_read', 'ticket_update'}
 
@@ -132,12 +129,12 @@ def score(case, raw):
                   flow_succeeded=final['status'] == 'succeeded', recorded_chat_status=final['status'],
                   permission_denied=permission, expected_stop_http=stopped,
                   final_required_quotes_present=answer, semantic_correctness='not_assessed',
-                  write_state_correct=score_state(case, raw),
-                  write_state_note='Null means no state observation. Values cover seeded ticket request boundaries, not continuous or concurrent writes.')
+                  write_state_correct=None,
+                  write_state_note='Exported chats/HTTP do not independently prove persisted database state.')
     failures = []
     for key, label in [('tool_selection_exact', 'tool_selection'), ('parameters_exact', 'tool_arguments'),
                        ('permission_denied', 'permission'), ('expected_stop_http', 'stop_control'),
-                       ('final_required_quotes_present', 'answer_quote'), ('followup_no_tools', 'followup_tool_constraint'), ('write_state_correct', 'database_state')]:
+                       ('final_required_quotes_present', 'answer_quote'), ('followup_no_tools', 'followup_tool_constraint')]:
         if result[key] is False:
             failures.append(label)
     if not result['flow_succeeded'] and not (case.get('denied') or case.get('action')):
@@ -150,8 +147,6 @@ def read_protocol(folder):
     protocol = json.loads((folder / 'protocol.json').read_text())
     if not isinstance(protocol, dict) or protocol.get('version') != 'multiturn-v1':
         raise ValueError('Unsupported trajectory protocol')
-    if protocol.get('state_evidence_schema') not in (None, 'ticket-state-v1'):
-        raise ValueError('Unsupported state evidence schema')
     cases = protocol.get('cases')
     if not isinstance(cases, list) or not cases:
         raise ValueError('Protocol requires nonempty cases')
@@ -170,22 +165,17 @@ def read_protocol(folder):
 
 def evaluate(folder):
     protocol, cases = read_protocol(folder)
-    rows = []
-    for case in cases:
-        raw = json.loads((folder / (case['id'] + '.json')).read_text())
-        if protocol.get('state_evidence_schema') and raw.get('state_evidence') is None:
-            raise ValueError('Required state observations missing')
-        rows.append(score(case, raw))
+    rows = [score(c, json.loads((folder / (c['id'] + '.json')).read_text())) for c in cases]
     metrics = {}
     for key in ('tool_selection_exact', 'parameters_exact', 'flow_succeeded', 'permission_denied',
                 'expected_stop_http', 'final_required_quotes_present', 'followup_no_tools', 'write_state_correct'):
         values = [r[key] for r in rows if r[key] is not None]
         metrics[key] = dict(n=len(values), passed=sum(values), rate=sum(values)/len(values) if values else None)
-    return dict(scorer_version='trajectory-score-v4', execution_mode='saved_output_replay',
+    return dict(scorer_version='trajectory-score-v3', execution_mode='saved_output_replay',
                 source_model=protocol.get('model', 'unknown'),
                 data_kind='synthetic task protocol; original output origin is declared by the source protocol',
                 cases=rows, metrics=metrics, limitations=[
-                    'HTTP stop alone is not proof of no database write; state observations cover seeded request boundaries only.',
+                    'HTTP stop is not proof of no database write.',
                     'Exact quote presence is not semantic answer accuracy.',
                     'No aggregate success rate combines controls, execution and answer quality.',
                     'Model origin is source-declared; replay performs no new inference.',
@@ -206,8 +196,7 @@ def main():
     files = [args.run / 'protocol.json', args.run / 'results.json'] + [args.run / (r['id'] + '.json') for r in result['cases']]
     result['receipt'] = dict(created_utc=datetime.now(timezone.utc).isoformat(),
         input_sha256={f.name: hashlib.sha256(f.read_bytes()).hexdigest() for f in files},
-        scorer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-        state_scorer_sha256=hashlib.sha256((Path(__file__).parent/'state_evidence.py').read_bytes()).hexdigest())
+        scorer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
     (output / 'scores.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps(result['metrics'], indent=2))
 
