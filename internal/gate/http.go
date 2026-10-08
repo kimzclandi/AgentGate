@@ -111,7 +111,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	timeout := 5 * time.Second
-	if r.URL.Path == "/api/chat" || r.URL.Path == "/api/chat/resume" {
+	if r.URL.Path == "/api/chat" || r.URL.Path == "/api/chat/resume" || r.URL.Path == "/api/chat/continue" {
 		timeout = 245 * time.Second
 	}
 	ctx, cancel := context.WithTimeout(r.Context(), timeout)
@@ -148,6 +148,19 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				er = errors.New("local_model_unavailable")
 			} else {
 				result, er = s.Chat.Start(ctx, i, b.Task)
+			}
+		}
+	case "POST /api/chat/continue":
+		var b struct {
+			ID   string `json:"chat_id"`
+			Task string `json:"task"`
+		}
+		er = decode(w, r, &b)
+		if er == nil {
+			if s.Chat == nil {
+				er = errors.New("local_model_unavailable")
+			} else {
+				result, er = s.Chat.Continue(ctx, i, b.ID, b.Task)
 			}
 		}
 	case "POST /api/chat/resume":
@@ -242,7 +255,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			status = 400
 		case code == "local_model_unavailable":
 			status = 503
-		case code == "chat_busy" || code == "chat_not_resumable" || code == "approval_required" || code == "step_limit" || code == "conversation_limit" || code == "write_must_be_single_call":
+		case code == "chat_not_continuable" || code == "chat_busy" || code == "chat_not_resumable" || code == "approval_required" || code == "step_limit" || code == "conversation_limit" || code == "write_must_be_single_call":
 			status = 409
 		case code == "model_result_unknown":
 			status = 502

@@ -1,5 +1,5 @@
 'use strict';
-let token = '', offset = 0, currentChat = null, session = 0;
+let token = '', offset = 0, currentChat = null, session = 0, chatBusy = false;
 const requests = new Set();
 const $ = id => document.getElementById(id);
 const show = (id, value) => {
@@ -10,12 +10,12 @@ function clearSession() {
   session++;
   for (const controller of requests) controller.abort();
   requests.clear();
-  token = ''; offset = 0; currentChat = null;
+  token = ''; offset = 0; currentChat = null; chatBusy = false;
   for (const id of ['identity', 'answer', 'transcript', 'chat-list', 'approval-list',
-    'run-list', 'tool-list', 'policy-info', 'audit-list', 'notice']) $(id).replaceChildren();
+    'run-list', 'chat-context', 'tool-list', 'policy-info', 'audit-list', 'notice']) $(id).replaceChildren();
   $('continue').disabled = true;
   $('reload-chat').disabled = true;
-  $('execute').disabled = false;
+  syncChatControls();
   show('connection', '未连接');
   show('page', '第 1 页');
 }
@@ -47,7 +47,10 @@ async function act(fn, button) {
   } catch (error) {
     if (epoch === session) show('notice', error.message);
   } finally {
-    if (button && epoch === session) button.disabled = button.id === 'continue' && currentChat?.status !== 'awaiting_approval';
+    if (epoch === session) {
+      if (button) button.disabled = false;
+      syncChatControls();
+    }
   }
 }
 function button(text, fn, className = '') {
@@ -56,12 +59,25 @@ function button(text, fn, className = '') {
   element.onclick = () => act(fn, element);
   return element;
 }
+function syncChatControls() {
+  $('execute').disabled = chatBusy;
+  $('followup').disabled = chatBusy || $('mode').value !== 'local' || currentChat?.status !== 'succeeded';
+  $('continue').disabled = chatBusy || currentChat?.status !== 'awaiting_approval';
+  $('reload-chat').disabled = chatBusy || !currentChat;
+}
+async function conversation(fn) {
+  if (chatBusy) return;
+  const epoch = session;
+  chatBusy = true; syncChatControls();
+  try { await fn(); }
+  finally { if (epoch === session) { chatBusy = false; syncChatControls(); } }
+}
 function renderChat(chat) {
   currentChat = chat;
+  show('chat-context', '当前对话 ' + chat.id.slice(0, 8) + (chat.parent_chat_id ? ' · 接续自 ' + chat.parent_chat_id.slice(0, 8) : ' · 新任务'));
   show('answer', chat.answer || chat.status);
   show('transcript', chat.messages);
-  $('continue').disabled = chat.status !== 'awaiting_approval';
-  $('reload-chat').disabled = false;
+  syncChatControls();
 }
 
 async function refresh() {
@@ -126,7 +142,7 @@ $('connect').onclick = () => {
   }, $('connect'));
 };
 $('refresh').onclick = () => act(refresh, $('refresh'));
-$('execute').onclick = () => act(async () => {
+$('execute').onclick = () => act(() => conversation(async () => {
   const epoch = session;
   currentChat = null; show('transcript', ''); $('continue').disabled = true; $('reload-chat').disabled = true;
   show('answer', '正在执行，请稍候。本地模型首次加载可能较慢。');
@@ -140,11 +156,19 @@ $('execute').onclick = () => act(async () => {
     }
     throw error;
   }
-}, $('execute'));
-$('continue').onclick = () => act(async () => {
+}), $('execute'));
+$('continue').onclick = () => act(() => conversation(async () => {
   if (!currentChat) return;
   renderChat(await api('chat/resume', { chat_id: currentChat.id })); await refresh();
-}, $('continue'));
+}), $('continue'));
+$('followup').onclick = () => act(() => conversation(async () => {
+  if (!currentChat || currentChat.status !== 'succeeded' || $('mode').value !== 'local') return;
+  const parent = currentChat.id;
+  const task = $('task').value.trim();
+  if (!task) throw new Error('请输入后续问题或办理要求。');
+  renderChat(await api('chat/continue', { chat_id: parent, task }));
+  await refresh();
+}), $('followup'));
 $('reload-chat').onclick = () => act(async () => {
   if (currentChat) renderChat(await api('chat?id=' + encodeURIComponent(currentChat.id)));
   await refresh();
@@ -156,5 +180,6 @@ $('revoke').onclick = () => act(async () => {
 $('prev').onclick = () => act(async () => { offset = Math.max(0, offset - 50); await refresh(); });
 $('next').onclick = () => act(async () => { offset = Math.min(100000, offset + 50); await refresh(); });
 $('mode').onchange = () => {
+  syncChatControls();
   $('task').value = $('mode').value === 'local' ? '请读取 doc-1 文档并用中文概括内容。' : 'read-doc doc-1';
 };

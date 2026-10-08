@@ -1,0 +1,6 @@
+{
+  "scripts/evaluate_service_flow.py": "a6629aecbf3dd13a10112ca23e50958bd48bc3eb8254c9ee39ad2f6380bed763",
+  "internal/gate/chat.go": "5db5c88c4cf45fd1a30f9a070c02d7f2d5ad684e6e0e3b757ce699254f435a88",
+  "web/app.js": "f215d7b9afc05c233dad637c5d565beffc1cbeba5786074a999aa132466aa90f",
+  "scripts/hf_local_bridge.py": "6d6b8bcbed3c6074907dd6a433f8165f4b4ed6caf49ffd8e55815b596a6fae91"
+}

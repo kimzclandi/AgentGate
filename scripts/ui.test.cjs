@@ -43,3 +43,40 @@ test('late network failure cannot overwrite a new identity screen', async () => 
   assert.equal(ui.get('answer').textContent, 'new identity');
   assert.equal(ui.get('notice').textContent, '');
 });
+
+test('follow-up sends the selected parent and disables itself while approval is pending', async () => {
+  const requests = [];
+  const overview = { identity: { user: 'alice', tenant: 'acme', role: 'operator' },
+    policy: {}, audit: [], chats: [], approvals: [], runs: [], tools: [] };
+  const ui = page(async (url, options) => {
+    requests.push([url, options.body && JSON.parse(options.body)]);
+    return { ok: true, json: async () => url.startsWith('/api/overview') ? overview :
+      { id: 'next', status: 'awaiting_approval', answer: 'approval needed', messages: [] } };
+  });
+  ui.get('mode').value = 'local';
+  ui.state.renderChat({ id: 'parent', status: 'succeeded', messages: [], answer: 'read' });
+  assert.equal(ui.get('followup').disabled, false);
+  ui.get('task').value = 'update that ticket';
+  await ui.get('followup').onclick();
+  assert.deepEqual(requests[0], ['/api/chat/continue', { chat_id: 'parent', task: 'update that ticket' }]);
+  assert.equal(ui.get('followup').disabled, true);
+  assert.equal(ui.get('continue').disabled, false);
+  ui.state.clearSession();
+  assert.equal(ui.get('followup').disabled, true);
+});
+test('a pending network turn cannot dispatch a duplicate conversation', async () => {
+  let complete;
+  let calls = 0;
+  const ui = page(() => { calls++; return new Promise(resolve => { complete = resolve; }); });
+  ui.get('mode').value = 'local';
+  ui.state.renderChat({ id: 'parent', status: 'succeeded', messages: [] });
+  ui.get('task').value = 'follow up';
+  const pending = ui.get('followup').onclick();
+  await ui.get('execute').onclick();
+  assert.equal(calls, 1);
+  assert.equal(ui.get('execute').disabled, true);
+  ui.state.clearSession();
+  complete({ ok: true, json: async () => ({ id: 'old', status: 'succeeded', messages: [] }) });
+  await pending;
+  assert.equal(ui.get('answer').textContent, '');
+});

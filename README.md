@@ -2,6 +2,8 @@
 
 ![Project wordmark](.github/project-header.svg)
 
+**简体中文** | [English](README.en.md)
+
 [![verify](https://github.com/kimzclandi/AgentGate/actions/workflows/ci.yml/badge.svg)](https://github.com/kimzclandi/AgentGate/actions/workflows/ci.yml)
 [![Stars](https://img.shields.io/github/stars/kimzclandi/AgentGate?style=flat)](https://github.com/kimzclandi/AgentGate/stargazers) [License status](#license)
 

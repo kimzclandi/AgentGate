@@ -1,0 +1,74 @@
+[
+  {
+    "id": "document",
+    "expected_tool_selection": true,
+    "parameters_exact": true,
+    "flow_succeeded": true,
+    "final_exact_quote_correct": false,
+    "expected_control_outcome": null,
+    "note": "quote score is strict: punctuation changes count as failure"
+  },
+  {
+    "id": "two-resources",
+    "expected_tool_selection": true,
+    "parameters_exact": true,
+    "flow_succeeded": true,
+    "final_exact_quote_correct": true,
+    "expected_control_outcome": null,
+    "note": "quote score is strict: punctuation changes count as failure"
+  },
+  {
+    "id": "approved-write",
+    "expected_tool_selection": true,
+    "parameters_exact": true,
+    "flow_succeeded": true,
+    "final_exact_quote_correct": true,
+    "expected_control_outcome": true,
+    "note": "quote score is strict: punctuation changes count as failure"
+  },
+  {
+    "id": "foreign",
+    "expected_tool_selection": true,
+    "parameters_exact": true,
+    "flow_succeeded": false,
+    "final_exact_quote_correct": null,
+    "expected_control_outcome": true,
+    "note": "null final answer means denial/cancellation/interruption has no model answer; exact quote is not semantic correctness"
+  },
+  {
+    "id": "cancel",
+    "expected_tool_selection": true,
+    "parameters_exact": true,
+    "flow_succeeded": false,
+    "final_exact_quote_correct": null,
+    "expected_control_outcome": true,
+    "note": "null final answer means denial/cancellation/interruption has no model answer; exact quote is not semantic correctness"
+  },
+  {
+    "id": "restart",
+    "expected_tool_selection": true,
+    "parameters_exact": true,
+    "flow_succeeded": false,
+    "final_exact_quote_correct": null,
+    "expected_control_outcome": true,
+    "note": "null final answer means denial/cancellation/interruption has no model answer; exact quote is not semantic correctness"
+  },
+  {
+    "id": "followup-baseline",
+    "expected_tool_selection": true,
+    "parameters_exact": true,
+    "flow_succeeded": true,
+    "final_exact_quote_correct": false,
+    "expected_control_outcome": null,
+    "note": "quote score is strict: punctuation changes count as failure"
+  },
+  {
+    "id": "followup-context",
+    "expected_tool_selection": true,
+    "parameters_exact": true,
+    "flow_succeeded": true,
+    "final_exact_quote_correct": true,
+    "expected_control_outcome": null,
+    "note": "quote score is strict: punctuation changes count as failure"
+  }
+]
