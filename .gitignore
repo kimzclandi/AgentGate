@@ -7,6 +7,10 @@
 coverage.out
 
 # Local evaluation outputs; public evidence is copied explicitly into docs/.
-/work/
+work/
 __pycache__/
 *.py[cod]
+.DS_Store
+.venv*/
+.pytest_cache/
+.ruff_cache/

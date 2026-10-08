@@ -21,3 +21,10 @@ make check ui-test docs-check demo scan
 - 不提交凭证、数据库、模型权重或用户数据；配置仅提供占位符。
 
 仓库尚未选定项目代码许可证；许可证需要共同作者确认，本指南不授予额外使用许可。依赖仍遵循各自许可证。
+
+## Community and documentation checks
+
+Use the issue forms for reproducible bugs and scoped feature requests. Include actual
+validation results in the PR template. Run `python3 .github/scripts/check_docs.py`
+after editing entry-point documents. See [community conduct](CODE_OF_CONDUCT.md) and
+the [maintenance guide](docs/MAINTAINING.md).
