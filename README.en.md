@@ -1,6 +1,8 @@
-# AgentGate
+# AgentGate: Authorization and Approval for Agent Tools
 
 [简体中文](README.md) | **English**
+
+![Project wordmark](.github/project-header.svg)
 
 [![verify](https://github.com/kimzclandi/AgentGate/actions/workflows/ci.yml/badge.svg)](https://github.com/kimzclandi/AgentGate/actions/workflows/ci.yml)
 
@@ -106,3 +108,9 @@ scripts/              HTTP, actual-model, UI-state and documentation checks
 - Boundaries: [Threat model](docs/THREAT_MODEL.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md)
 
 Linked technical documents retain their original language. Production web login, OAuth service identities, multi-instance coordination, vector RAG, arbitrary-code isolation and reconciliation of external business writes are not implemented. GitHub hosts code and documentation; using the backend online requires separate deployment. Development authentication permits local access only.
+
+## Contributing
+
+[Contribution guide](CONTRIBUTING.md) · [Code of conduct](CODE_OF_CONDUCT.md) · [Maintenance guide](docs/MAINTAINING.md) · [Naming and compatibility](docs/NAMING.md)
+
+[Report a bug](https://github.com/kimzclandi/AgentGate/issues/new?template=bug_report.yml) · [Request a feature](https://github.com/kimzclandi/AgentGate/issues/new?template=feature_request.yml)
