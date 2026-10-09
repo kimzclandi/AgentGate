@@ -1,0 +1,246 @@
+{
+  "case": {
+    "id": "approved",
+    "body": "STATE-PROBE-approved"
+  },
+  "raw": {
+    "trace": [
+      {
+        "path": "agent",
+        "request": {
+          "task": "update-ticket ticket-1 STATE-PROBE-approved"
+        },
+        "http": 200,
+        "response": {
+          "action": {
+            "id": "36067468e6be1ca3e53d71875f1a1813",
+            "run_id": "80daed028898e8ebb9eec1d7c3457d46",
+            "tool": "ticket.update",
+            "params": {
+              "resource_id": "ticket-1",
+              "body": "STATE-PROBE-approved"
+            },
+            "digest": "4119d8acdd8ac4fd7adcae1ee0ca8de7be596071b9dd3a1d656a2f2130823f96",
+            "status": "pending",
+            "expires": 1790062416
+          },
+          "answer": "",
+          "awaiting_human": true,
+          "mode": "deterministic-mock",
+          "run_id": "80daed028898e8ebb9eec1d7c3457d46"
+        }
+      },
+      {
+        "path": "approve",
+        "request": {
+          "action_id": "36067468e6be1ca3e53d71875f1a1813",
+          "digest": "modified"
+        },
+        "http": 409,
+        "response": {
+          "error": "approval_mismatch",
+          "request_id": "7466473310c031e0a311e28af3ac8e9f"
+        }
+      },
+      {
+        "path": "approve",
+        "request": {
+          "action_id": "36067468e6be1ca3e53d71875f1a1813",
+          "digest": "4119d8acdd8ac4fd7adcae1ee0ca8de7be596071b9dd3a1d656a2f2130823f96"
+        },
+        "http": 403,
+        "response": {
+          "error": "access_denied",
+          "request_id": "f9a050b60ec46721b2f7065c520dcb08"
+        }
+      },
+      {
+        "path": "approve",
+        "request": {
+          "action_id": "36067468e6be1ca3e53d71875f1a1813",
+          "digest": "4119d8acdd8ac4fd7adcae1ee0ca8de7be596071b9dd3a1d656a2f2130823f96"
+        },
+        "http": 200,
+        "response": {
+          "id": "36067468e6be1ca3e53d71875f1a1813",
+          "run_id": "80daed028898e8ebb9eec1d7c3457d46",
+          "tool": "ticket.update",
+          "params": {
+            "resource_id": "ticket-1",
+            "body": "STATE-PROBE-approved"
+          },
+          "digest": "4119d8acdd8ac4fd7adcae1ee0ca8de7be596071b9dd3a1d656a2f2130823f96",
+          "status": "succeeded",
+          "expires": 1790062416,
+          "result": "updated"
+        }
+      },
+      {
+        "path": "approve",
+        "request": {
+          "action_id": "36067468e6be1ca3e53d71875f1a1813",
+          "digest": "4119d8acdd8ac4fd7adcae1ee0ca8de7be596071b9dd3a1d656a2f2130823f96"
+        },
+        "http": 409,
+        "response": {
+          "error": "approval_replayed",
+          "request_id": "323e30fc8894bd9612e846df0537ae8e"
+        }
+      }
+    ],
+    "state_evidence": {
+      "schema": "ticket-state-v1",
+      "case_id": "approved",
+      "observations": [
+        {
+          "trace_count": 0,
+          "trace_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "Open: customer needs help",
+            "version": 1
+          },
+          "actions": []
+        },
+        {
+          "trace_count": 1,
+          "trace_sha256": "f90ab535e774e0dbb4f50aba3952143ae663fbeea680649af83731978ffced4b",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "Open: customer needs help",
+            "version": 1
+          },
+          "actions": [
+            {
+              "id": "36067468e6be1ca3e53d71875f1a1813",
+              "run_id": "80daed028898e8ebb9eec1d7c3457d46",
+              "tool": "ticket.update",
+              "params": {
+                "resource_id": "ticket-1",
+                "body": "STATE-PROBE-approved"
+              },
+              "digest": "4119d8acdd8ac4fd7adcae1ee0ca8de7be596071b9dd3a1d656a2f2130823f96",
+              "status": "pending",
+              "tenant": "acme",
+              "user_id": "alice"
+            }
+          ]
+        },
+        {
+          "trace_count": 2,
+          "trace_sha256": "ad62352381df8a55f9b81855bcaa45955f8eee931d1d79c4bde7e413d3f24c11",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "Open: customer needs help",
+            "version": 1
+          },
+          "actions": [
+            {
+              "id": "36067468e6be1ca3e53d71875f1a1813",
+              "run_id": "80daed028898e8ebb9eec1d7c3457d46",
+              "tool": "ticket.update",
+              "params": {
+                "resource_id": "ticket-1",
+                "body": "STATE-PROBE-approved"
+              },
+              "digest": "4119d8acdd8ac4fd7adcae1ee0ca8de7be596071b9dd3a1d656a2f2130823f96",
+              "status": "pending",
+              "tenant": "acme",
+              "user_id": "alice"
+            }
+          ]
+        },
+        {
+          "trace_count": 3,
+          "trace_sha256": "f4a850b0d59c0065e655addc1cca85c8ba12a33a9ed09fa0daebc163c5992703",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "Open: customer needs help",
+            "version": 1
+          },
+          "actions": [
+            {
+              "id": "36067468e6be1ca3e53d71875f1a1813",
+              "run_id": "80daed028898e8ebb9eec1d7c3457d46",
+              "tool": "ticket.update",
+              "params": {
+                "resource_id": "ticket-1",
+                "body": "STATE-PROBE-approved"
+              },
+              "digest": "4119d8acdd8ac4fd7adcae1ee0ca8de7be596071b9dd3a1d656a2f2130823f96",
+              "status": "pending",
+              "tenant": "acme",
+              "user_id": "alice"
+            }
+          ]
+        },
+        {
+          "trace_count": 4,
+          "trace_sha256": "9e09c4319fbf29ae70de95f2c5166ea0d351994c6c835efa595fa353a8918beb",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "STATE-PROBE-approved",
+            "version": 2
+          },
+          "actions": [
+            {
+              "id": "36067468e6be1ca3e53d71875f1a1813",
+              "run_id": "80daed028898e8ebb9eec1d7c3457d46",
+              "tool": "ticket.update",
+              "params": {
+                "resource_id": "ticket-1",
+                "body": "STATE-PROBE-approved"
+              },
+              "digest": "4119d8acdd8ac4fd7adcae1ee0ca8de7be596071b9dd3a1d656a2f2130823f96",
+              "status": "succeeded",
+              "tenant": "acme",
+              "user_id": "alice"
+            }
+          ]
+        },
+        {
+          "trace_count": 5,
+          "trace_sha256": "9e4b7968d1c4c624fe645b49b9d87526076215c56bba30df657e3710c5532e87",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "STATE-PROBE-approved",
+            "version": 2
+          },
+          "actions": [
+            {
+              "id": "36067468e6be1ca3e53d71875f1a1813",
+              "run_id": "80daed028898e8ebb9eec1d7c3457d46",
+              "tool": "ticket.update",
+              "params": {
+                "resource_id": "ticket-1",
+                "body": "STATE-PROBE-approved"
+              },
+              "digest": "4119d8acdd8ac4fd7adcae1ee0ca8de7be596071b9dd3a1d656a2f2130823f96",
+              "status": "succeeded",
+              "tenant": "acme",
+              "user_id": "alice"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

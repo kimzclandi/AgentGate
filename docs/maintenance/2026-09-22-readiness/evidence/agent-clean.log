@@ -1,0 +1,40 @@
+test_duplicate_ids_rejected (test_export_contract.ExportTests.test_duplicate_ids_rejected) ... ok
+test_invalid_last_trace_leaves_no_output (test_export_contract.ExportTests.test_invalid_last_trace_leaves_no_output) ... ok
+test_missing_database_is_not_created (test_export_contract.ExportTests.test_missing_database_is_not_created) ... ok
+test_missing_result_fails_without_partial_export (test_export_contract.ExportTests.test_missing_result_fails_without_partial_export) ... ok
+test_shuffled_legacy_booleans_cannot_change_scores (test_export_contract.ExportTests.test_shuffled_legacy_booleans_cannot_change_scores) ... ok
+test_denied_has_no_answer_score_or_db_claim (test_trajectory.TrajectoryTests.test_denied_has_no_answer_score_or_db_claim) ... ok
+test_extra_or_duplicate_tool_fails (test_trajectory.TrajectoryTests.test_extra_or_duplicate_tool_fails) ... ok
+test_followup_tools_are_scored_after_latest_user_only (test_trajectory.TrajectoryTests.test_followup_tools_are_scored_after_latest_user_only) ... ok
+test_historical_replay_denominators (test_trajectory.TrajectoryTests.test_historical_replay_denominators) ... ok
+test_missing_trace_rejected (test_trajectory.TrajectoryTests.test_missing_trace_rejected) ... ok
+test_partial_answer_does_not_pass_two_resource_task (test_trajectory.TrajectoryTests.test_partial_answer_does_not_pass_two_resource_task) ... ok
+test_result_id_coverage_required (test_trajectory.TrajectoryTests.test_result_id_coverage_required) ... ok
+test_wrong_argument_separate_from_tool_selection (test_trajectory.TrajectoryTests.test_wrong_argument_separate_from_tool_selection) ... ok
+test_empty_or_string_quote_rubric_cannot_vacuously_pass (test_trajectory_contract.EvidenceContractTests.test_empty_or_string_quote_rubric_cannot_vacuously_pass) ... ok
+test_failed_cancel_call_cannot_count_as_control_success (test_trajectory_contract.EvidenceContractTests.test_failed_cancel_call_cannot_count_as_control_success) ... ok
+test_forbidden_error_must_be_permission_denial (test_trajectory_contract.EvidenceContractTests.test_forbidden_error_must_be_permission_denial) ... ok
+test_missing_initial_request_is_schema_error (test_trajectory_contract.EvidenceContractTests.test_missing_initial_request_is_schema_error) ... ok
+test_server_failure_is_not_expected_stop (test_trajectory_contract.EvidenceContractTests.test_server_failure_is_not_expected_stop) ... ok
+test_swapped_task_evidence_is_rejected (test_trajectory_contract.EvidenceContractTests.test_swapped_task_evidence_is_rejected) ... ok
+test_unrelated_http_error_is_not_expected_stop (test_trajectory_contract.EvidenceContractTests.test_unrelated_http_error_is_not_expected_stop) ... ok
+test_unrelated_persisted_chat_is_rejected (test_trajectory_contract.EvidenceContractTests.test_unrelated_persisted_chat_is_rejected) ... ok
+test_write_rubric_requires_explicit_body (test_trajectory_contract.EvidenceContractTests.test_write_rubric_requires_explicit_body) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.321s
+
+OK
+✔ switching identity clears rendered data and ignores a late old response (1.674792ms)
+✔ late network failure cannot overwrite a new identity screen (1.013458ms)
+✔ follow-up sends the selected parent and disables itself while approval is pending (1.105084ms)
+✔ a pending network turn cannot dispatch a duplicate conversation (0.444917ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 56.046625
+PASS: 75 local Markdown links; 135 source files inspected for runtime artifacts (not a full secret scan).

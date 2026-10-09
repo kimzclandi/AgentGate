@@ -12,7 +12,6 @@ import sqlite3
 import tempfile
 
 from score_trajectory import evaluate, read_protocol
-from state_evidence import capture
 
 
 def export(source, output):
@@ -22,7 +21,7 @@ def export(source, output):
         raise ValueError('Output must be a new repository work/ child')
     if output.exists():
         raise FileExistsError(output)
-    protocol, cases = read_protocol(source)  # Reject incomplete or duplicate result coverage first.
+    _, cases = read_protocol(source)  # Reject incomplete or duplicate result coverage first.
     payloads = {name: (source / name).read_bytes()
                 for name in ('protocol.json', 'results.json', 'source_hashes.json')}
     for case in cases:
@@ -39,18 +38,8 @@ def export(source, output):
             connection.close()
         for chat in chats:
             chat['messages'] = json.loads(chat['messages'])
-        raw = {'trace': trace, 'persisted_chats': chats}
-        state_file = directory / 'state-evidence.json'
-        if state_file.exists():
-            state = json.loads(state_file.read_text())
-            observations = state.get('observations', [])
-            if not observations or observations[-1] != capture(database, trace):
-                raise ValueError('Final saved state differs from current database')
-            raw['state_evidence'] = state
-        elif protocol.get('state_evidence_schema'):
-            raise ValueError('Required state observations missing')
         payloads[case['id'] + '.json'] = (json.dumps(
-            raw, ensure_ascii=False, indent=2) + '\n').encode()
+            {'trace': trace, 'persisted_chats': chats}, ensure_ascii=False, indent=2) + '\n').encode()
     output.parent.mkdir(parents=True, exist_ok=True)
     stage = Path(tempfile.mkdtemp(prefix='.export-', dir=output.parent))
     try:
@@ -59,7 +48,6 @@ def export(source, output):
         scores = evaluate(stage)  # Legacy booleans are never copied into new scores.
         scores['receipt'] = {
             'input_sha256': {name: hashlib.sha256(data).hexdigest() for name, data in payloads.items()},
-            'state_scorer_sha256': hashlib.sha256((Path(__file__).parent / 'state_evidence.py').read_bytes()).hexdigest(),
             'exporter_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             'scorer_sha256': hashlib.sha256((Path(__file__).parent / 'score_trajectory.py').read_bytes()).hexdigest(),
             'source_state': 'Caller must stop the evaluation before export; not a cross-case live DB snapshot.'}

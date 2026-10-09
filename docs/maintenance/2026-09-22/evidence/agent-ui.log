@@ -1,0 +1,12 @@
+✔ switching identity clears rendered data and ignores a late old response (1.717334ms)
+✔ late network failure cannot overwrite a new identity screen (0.992083ms)
+✔ follow-up sends the selected parent and disables itself while approval is pending (1.098416ms)
+✔ a pending network turn cannot dispatch a duplicate conversation (0.415542ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 63.586959

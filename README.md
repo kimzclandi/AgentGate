@@ -114,6 +114,20 @@ scripts/             HTTP、真实模型、UI 状态与文档检查
 
 尚未实现生产 Web 登录、OAuth 服务身份、多实例协调、向量 RAG、任意代码隔离和外部业务写入对账。GitHub 提供代码和文档，浏览者在线使用后端还需要独立部署；开发认证仅允许本机访问。
 
+## 轨迹评分与状态证据
+
+分别检查工具选择、参数、执行/控制流程、答案引用代理指标与请求边界的数据库状态，不合并成单一成功率。历史模型轨迹缺少状态观察时保留 `write_state_correct=null`；精确引用命中不等于人工语义正确率。新增状态采集接口的真实模型运行尚未验证，已保存的三个状态用例来自确定性 HTTP/SQLite 验收。
+
+以下命令只运行测试和保存证据回放；`--output` 必须使用新的 `work/` 子目录，不启动模型：
+
+```sh
+make trajectory-test
+python3 scripts/score_trajectory.py docs/evidence/multiturn-v1 --output work/trajectory-review
+python3 scripts/state_evidence.py --run docs/maintenance/2026-09-22-depth/evidence/state-demo
+```
+
+[评分实现与验证](docs/maintenance/2026-09-22/README.md) · [评分回归修复](docs/maintenance/2026-09-22-detail/README.md) · [导出完整性](docs/maintenance/2026-09-22-readiness/README.md) · [请求边界状态与限制](docs/STATE_EVIDENCE.md)
+
 ## Contributing / 参与贡献
 
 [贡献指南](CONTRIBUTING.md) · [行为准则](CODE_OF_CONDUCT.md) · [结构与维护](docs/MAINTAINING.md)

@@ -1,0 +1,17 @@
+{
+  "python": "Python 3.14.6",
+  "go": "go1.27.1 darwin/arm64",
+  "node": "v26.6.0",
+  "commands": [
+    "go test ./...",
+    "go test -race -count=1 ./...",
+    "go vet ./...",
+    "go build -trimpath -o bin/agentgate ./cmd/agentgate",
+    "node --test scripts/ui.test.cjs",
+    "python3 scripts/check_docs.py",
+    "python3 scripts/demo.py (approved loopback access; 22/22)",
+    "python3 -m unittest discover -s tests -v",
+    "python3 scripts/score_trajectory.py docs/evidence/multiturn-v1 --output work/replay-final",
+    "python3 scripts/verify_multiturn.py docs/evidence/multiturn-v1"
+  ]
+}

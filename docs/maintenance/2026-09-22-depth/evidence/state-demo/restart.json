@@ -1,0 +1,156 @@
+{
+  "case": {
+    "id": "restart",
+    "body": "STATE-PROBE-restart",
+    "action": "restart"
+  },
+  "raw": {
+    "trace": [
+      {
+        "path": "agent",
+        "request": {
+          "task": "update-ticket ticket-1 STATE-PROBE-restart"
+        },
+        "http": 200,
+        "response": {
+          "action": {
+            "id": "b8925410543967def95e1af14b03ba54",
+            "run_id": "4818168022d94519019d95d0fe683357",
+            "tool": "ticket.update",
+            "params": {
+              "resource_id": "ticket-1",
+              "body": "STATE-PROBE-restart"
+            },
+            "digest": "4c84c7fbf3e244794f6ac4993310f79c1ea32084ad61bfe2f58e5a8a57b73616",
+            "status": "pending",
+            "expires": 1790062416
+          },
+          "answer": "",
+          "awaiting_human": true,
+          "mode": "deterministic-mock",
+          "run_id": "4818168022d94519019d95d0fe683357"
+        }
+      },
+      {
+        "path": "process/restart",
+        "request": {},
+        "http": 200,
+        "response": {
+          "operation": "terminated_then_started"
+        }
+      },
+      {
+        "path": "approve",
+        "request": {
+          "action_id": "b8925410543967def95e1af14b03ba54",
+          "digest": "4c84c7fbf3e244794f6ac4993310f79c1ea32084ad61bfe2f58e5a8a57b73616"
+        },
+        "http": 403,
+        "response": {
+          "error": "access_denied",
+          "request_id": "56ccb44a7228917fd51e765a38f034ca"
+        }
+      }
+    ],
+    "state_evidence": {
+      "schema": "ticket-state-v1",
+      "case_id": "restart",
+      "observations": [
+        {
+          "trace_count": 0,
+          "trace_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "Open: customer needs help",
+            "version": 1
+          },
+          "actions": []
+        },
+        {
+          "trace_count": 1,
+          "trace_sha256": "155032106e4554ef79296295b92a62a1056ff7f891ecfa491ee18fc322205310",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "Open: customer needs help",
+            "version": 1
+          },
+          "actions": [
+            {
+              "id": "b8925410543967def95e1af14b03ba54",
+              "run_id": "4818168022d94519019d95d0fe683357",
+              "tool": "ticket.update",
+              "params": {
+                "resource_id": "ticket-1",
+                "body": "STATE-PROBE-restart"
+              },
+              "digest": "4c84c7fbf3e244794f6ac4993310f79c1ea32084ad61bfe2f58e5a8a57b73616",
+              "status": "pending",
+              "tenant": "acme",
+              "user_id": "alice"
+            }
+          ]
+        },
+        {
+          "trace_count": 2,
+          "trace_sha256": "9d72f8a26bafe0583b6254b4a27361958fdbd750c399c698d5d336775e36dc96",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "Open: customer needs help",
+            "version": 1
+          },
+          "actions": [
+            {
+              "id": "b8925410543967def95e1af14b03ba54",
+              "run_id": "4818168022d94519019d95d0fe683357",
+              "tool": "ticket.update",
+              "params": {
+                "resource_id": "ticket-1",
+                "body": "STATE-PROBE-restart"
+              },
+              "digest": "4c84c7fbf3e244794f6ac4993310f79c1ea32084ad61bfe2f58e5a8a57b73616",
+              "status": "pending",
+              "tenant": "acme",
+              "user_id": "alice"
+            }
+          ]
+        },
+        {
+          "trace_count": 3,
+          "trace_sha256": "4a77b4b8af2505a8b7b8e1ff983eb041148736c221d6bf868f35871e9ee1959a",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "Open: customer needs help",
+            "version": 1
+          },
+          "actions": [
+            {
+              "id": "b8925410543967def95e1af14b03ba54",
+              "run_id": "4818168022d94519019d95d0fe683357",
+              "tool": "ticket.update",
+              "params": {
+                "resource_id": "ticket-1",
+                "body": "STATE-PROBE-restart"
+              },
+              "digest": "4c84c7fbf3e244794f6ac4993310f79c1ea32084ad61bfe2f58e5a8a57b73616",
+              "status": "pending",
+              "tenant": "acme",
+              "user_id": "alice"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

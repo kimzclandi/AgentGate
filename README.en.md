@@ -109,6 +109,20 @@ scripts/              HTTP, actual-model, UI-state and documentation checks
 
 Linked technical documents retain their original language. Production web login, OAuth service identities, multi-instance coordination, vector RAG, arbitrary-code isolation and reconciliation of external business writes are not implemented. GitHub hosts code and documentation; using the backend online requires separate deployment. Development authentication permits local access only.
 
+## Trajectory scoring and state evidence
+
+Tool selection, arguments, execution/control flow, answer-quotation proxies and request-boundary database state are checked separately, without one aggregate success rate. Historical model trajectories without state observations retain `write_state_correct=null`; exact quote presence is not human semantic accuracy. The new state-capture hook has not been exercised with a real model. The three saved state cases come from deterministic HTTP/SQLite acceptance runs.
+
+These commands run tests and saved-evidence replay only. `--output` must name a new `work/` child; no model is started:
+
+```sh
+make trajectory-test
+python3 scripts/score_trajectory.py docs/evidence/multiturn-v1 --output work/trajectory-review
+python3 scripts/state_evidence.py --run docs/maintenance/2026-09-22-depth/evidence/state-demo
+```
+
+[Scoring implementation and verification](docs/maintenance/2026-09-22/README.md) · [Scoring regression fixes](docs/maintenance/2026-09-22-detail/README.md) · [Export integrity](docs/maintenance/2026-09-22-readiness/README.md) · [Request-boundary state and limits](docs/STATE_EVIDENCE.md)
+
 ## Contributing
 
 [Contribution guide](CONTRIBUTING.md) · [Code of conduct](CODE_OF_CONDUCT.md) · [Maintenance guide](docs/MAINTAINING.md) · [Naming and compatibility](docs/NAMING.md)

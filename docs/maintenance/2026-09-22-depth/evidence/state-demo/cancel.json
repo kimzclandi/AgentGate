@@ -1,0 +1,158 @@
+{
+  "case": {
+    "id": "cancel",
+    "body": "STATE-PROBE-cancel",
+    "action": "cancel"
+  },
+  "raw": {
+    "trace": [
+      {
+        "path": "agent",
+        "request": {
+          "task": "update-ticket ticket-1 STATE-PROBE-cancel"
+        },
+        "http": 200,
+        "response": {
+          "action": {
+            "id": "54d953dd9be6d7cb59b2f412e45dce3d",
+            "run_id": "d7b5620172f0dfff1e44f65986774faa",
+            "tool": "ticket.update",
+            "params": {
+              "resource_id": "ticket-1",
+              "body": "STATE-PROBE-cancel"
+            },
+            "digest": "941893a7b83ab76e7d40e712ab3f6bcd89e2c95cf912cb2b8e12645744a771bb",
+            "status": "pending",
+            "expires": 1790062416
+          },
+          "answer": "",
+          "awaiting_human": true,
+          "mode": "deterministic-mock",
+          "run_id": "d7b5620172f0dfff1e44f65986774faa"
+        }
+      },
+      {
+        "path": "cancel",
+        "request": {
+          "run_id": "d7b5620172f0dfff1e44f65986774faa"
+        },
+        "http": 200,
+        "response": {
+          "status": "cancelled"
+        }
+      },
+      {
+        "path": "approve",
+        "request": {
+          "action_id": "54d953dd9be6d7cb59b2f412e45dce3d",
+          "digest": "941893a7b83ab76e7d40e712ab3f6bcd89e2c95cf912cb2b8e12645744a771bb"
+        },
+        "http": 403,
+        "response": {
+          "error": "access_denied",
+          "request_id": "87f476419e70710b76876c241e17d7a3"
+        }
+      }
+    ],
+    "state_evidence": {
+      "schema": "ticket-state-v1",
+      "case_id": "cancel",
+      "observations": [
+        {
+          "trace_count": 0,
+          "trace_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "Open: customer needs help",
+            "version": 1
+          },
+          "actions": []
+        },
+        {
+          "trace_count": 1,
+          "trace_sha256": "303c6a3fd81e1f14d2194903d57546d050a06280c1feebcf4618065f43573338",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "Open: customer needs help",
+            "version": 1
+          },
+          "actions": [
+            {
+              "id": "54d953dd9be6d7cb59b2f412e45dce3d",
+              "run_id": "d7b5620172f0dfff1e44f65986774faa",
+              "tool": "ticket.update",
+              "params": {
+                "resource_id": "ticket-1",
+                "body": "STATE-PROBE-cancel"
+              },
+              "digest": "941893a7b83ab76e7d40e712ab3f6bcd89e2c95cf912cb2b8e12645744a771bb",
+              "status": "pending",
+              "tenant": "acme",
+              "user_id": "alice"
+            }
+          ]
+        },
+        {
+          "trace_count": 2,
+          "trace_sha256": "2337a2ae75e722ca8a7152406de2c94ca19908c085c50eb93d64bdc5665561f8",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "Open: customer needs help",
+            "version": 1
+          },
+          "actions": [
+            {
+              "id": "54d953dd9be6d7cb59b2f412e45dce3d",
+              "run_id": "d7b5620172f0dfff1e44f65986774faa",
+              "tool": "ticket.update",
+              "params": {
+                "resource_id": "ticket-1",
+                "body": "STATE-PROBE-cancel"
+              },
+              "digest": "941893a7b83ab76e7d40e712ab3f6bcd89e2c95cf912cb2b8e12645744a771bb",
+              "status": "pending",
+              "tenant": "acme",
+              "user_id": "alice"
+            }
+          ]
+        },
+        {
+          "trace_count": 3,
+          "trace_sha256": "0904f3c59cfe64056284530afe47a9d342f5c022349e194d75db052cfed69aba",
+          "resource": {
+            "tenant": "acme",
+            "id": "ticket-1",
+            "owner": "alice",
+            "kind": "ticket",
+            "body": "Open: customer needs help",
+            "version": 1
+          },
+          "actions": [
+            {
+              "id": "54d953dd9be6d7cb59b2f412e45dce3d",
+              "run_id": "d7b5620172f0dfff1e44f65986774faa",
+              "tool": "ticket.update",
+              "params": {
+                "resource_id": "ticket-1",
+                "body": "STATE-PROBE-cancel"
+              },
+              "digest": "941893a7b83ab76e7d40e712ab3f6bcd89e2c95cf912cb2b8e12645744a771bb",
+              "status": "pending",
+              "tenant": "acme",
+              "user_id": "alice"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

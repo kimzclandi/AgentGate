@@ -1,0 +1,17 @@
+{
+  "execution_mode": "saved_snapshot_replay",
+  "cases": [
+    {
+      "id": "approved",
+      "write_state_correct": true
+    },
+    {
+      "id": "cancel",
+      "write_state_correct": true
+    },
+    {
+      "id": "restart",
+      "write_state_correct": true
+    }
+  ]
+}

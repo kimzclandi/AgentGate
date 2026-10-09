@@ -1,0 +1,42 @@
+{
+  "tool_selection_exact": {
+    "n": 8,
+    "passed": 8,
+    "rate": 1.0
+  },
+  "parameters_exact": {
+    "n": 8,
+    "passed": 8,
+    "rate": 1.0
+  },
+  "flow_succeeded": {
+    "n": 8,
+    "passed": 5,
+    "rate": 0.625
+  },
+  "permission_denied": {
+    "n": 1,
+    "passed": 1,
+    "rate": 1.0
+  },
+  "expected_stop_http": {
+    "n": 2,
+    "passed": 2,
+    "rate": 1.0
+  },
+  "final_required_quotes_present": {
+    "n": 5,
+    "passed": 3,
+    "rate": 0.6
+  },
+  "followup_no_tools": {
+    "n": 2,
+    "passed": 2,
+    "rate": 1.0
+  },
+  "write_state_correct": {
+    "n": 0,
+    "passed": 0,
+    "rate": null
+  }
+}

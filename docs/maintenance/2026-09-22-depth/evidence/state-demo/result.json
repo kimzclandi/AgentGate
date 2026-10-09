@@ -1,0 +1,32 @@
+{
+  "schema": "state-demo-v1",
+  "mode": "deterministic_mock_real_http_sqlite",
+  "cases": [
+    {
+      "id": "approved",
+      "write_state_correct": true,
+      "requests": 5
+    },
+    {
+      "id": "cancel",
+      "write_state_correct": true,
+      "requests": 3
+    },
+    {
+      "id": "restart",
+      "write_state_correct": true,
+      "requests": 3
+    }
+  ],
+  "scope": "Seeded request-boundary observations, not new model inference or concurrent safety proof.",
+  "code_sha256": {
+    "scripts/state_demo.py": "13ce8a5508cc8cac49fd813a1e4cfd9ad001622c9b605a5e683a19b586c071ec",
+    "scripts/state_evidence.py": "662b072de3ac424d88214dd2d79bf6c0c2d492de054c305f6d89d3cf761051c8"
+  },
+  "binary_sha256": "bca605bf2027c158ae23b7f035169f58fe68c555a75da845898636bde96c20d5",
+  "input_sha256": {
+    "approved": "43d8afcec50e1808f5280f770b0b4cc868eda00f869ebed4568a953d24577f3e",
+    "cancel": "90160ec72096a7355ae6e1caba5beb3515b2916e0ba566f54789b02e3606cf6d",
+    "restart": "72ead965b8b61ffcb027c50b03b157e7b77a91b6778b6545f5d3f5f6790ee63d"
+  }
+}
