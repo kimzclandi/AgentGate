@@ -10,7 +10,7 @@ The v4 scorer keeps tool selection, arguments, control HTTP, flow, answer quotat
 
 ## Reproduce
 
-Python 3.12+ standard library, Go 1.27.1 for the existing server. No model required:
+Python 3.12+ standard library, Go 1.27.2 for the existing server. No model required:
 
 ```sh
 go build -trimpath -o bin/agentgate ./cmd/agentgate

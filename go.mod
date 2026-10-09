@@ -2,6 +2,8 @@ module github.com/kimzclandi/agentgate
 
 go 1.26.0
 
+toolchain go1.27.2
+
 require (
 	github.com/coreos/go-oidc/v3 v3.17.0
 	github.com/golang-jwt/jwt/v5 v5.3.1

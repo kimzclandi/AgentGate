@@ -30,7 +30,7 @@
 
 ## 快速开始 / Quick Start
 
-需要 Go 1.27.1、macOS 或 Linux，以及 [Ollama](https://ollama.com/download)。Go 安装见[官方说明](https://go.dev/doc/install)。首次模型下载需要网络和约 1.36 GB 磁盘空间，无需购买云端 API。
+需要 Go 1.27.2、macOS 或 Linux，以及 [Ollama](https://ollama.com/download)。Go 安装见[官方说明](https://go.dev/doc/install)。首次模型下载需要网络和约 1.36 GB 磁盘空间，无需购买云端 API。
 
 ### Installation / 安装
 

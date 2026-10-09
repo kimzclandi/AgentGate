@@ -29,7 +29,7 @@ This is a **single-instance reference implementation for controlled agent execut
 
 ## Run an actual local agent
 
-Requires Go 1.27.1, macOS or Linux, and [Ollama](https://ollama.com/download). See the [official Go installation guide](https://go.dev/doc/install). The initial model download needs network access and about 1.36 GB of disk space; no paid cloud API is required.
+Requires Go 1.27.2, macOS or Linux, and [Ollama](https://ollama.com/download). See the [official Go installation guide](https://go.dev/doc/install). The initial model download needs network access and about 1.36 GB of disk space; no paid cloud API is required.
 
 ```sh
 git clone https://github.com/kimzclandi/AgentGate.git
