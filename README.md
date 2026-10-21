@@ -5,7 +5,7 @@
 **简体中文** | [English](README.en.md)
 
 [![verify](https://github.com/kimzclandi/AgentGate/actions/workflows/ci.yml/badge.svg)](https://github.com/kimzclandi/AgentGate/actions/workflows/ci.yml)
-[![Stars](https://img.shields.io/github/stars/kimzclandi/AgentGate?style=flat)](https://github.com/kimzclandi/AgentGate/stargazers) [License status](#license)
+[License status](#license)
 
 **用 Go 为 AI Agent 的文档读取和工单修改增加身份校验、资源权限与人工审批。**
 
@@ -30,7 +30,7 @@
 
 ## 快速开始 / Quick Start
 
-需要 Go 1.27.2、macOS 或 Linux，以及 [Ollama](https://ollama.com/download)。Go 安装见[官方说明](https://go.dev/doc/install)。首次模型下载需要网络和约 1.36 GB 磁盘空间，无需购买云端 API。
+需要 Go 1.27.3、macOS 或 Linux，以及 [Ollama](https://ollama.com/download)。Go 安装见[官方说明](https://go.dev/doc/install)。首次模型下载需要网络和约 1.36 GB 磁盘空间，无需购买云端 API。
 
 ### Installation / 安装
 
