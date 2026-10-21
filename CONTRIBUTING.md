@@ -4,7 +4,7 @@
 
 ## 开发检查
 
-使用 Go 1.27.2、Python 3.10+、Node.js 22。Go 1.27.2 修复了当前标准库漏洞；CI 与模块的首选工具链同步固定到该版本，旧实验记录保留原工具链信息。`go.mod` 的 `go 1.26.0` 仍表示语言最低版本，默认 `GOTOOLCHAIN=auto` 会采用首选工具链或更新版本。参见 [Go 发布记录](https://go.dev/doc/devel/release#go1.27.2)与[工具链选择](https://go.dev/doc/toolchain)。
+使用 Go 1.27.3、Python 3.10+、Node.js 22。Go 1.27.3 修复了当前标准库漏洞；CI 与模块的首选工具链同步固定到该版本，旧实验记录保留原工具链信息。`go.mod` 的 `go 1.26.0` 仍表示语言最低版本，默认 `GOTOOLCHAIN=auto` 会采用首选工具链或更新版本。参见 [Go 发布记录](https://go.dev/doc/devel/release#go1.27.3)与[工具链选择](https://go.dev/doc/toolchain)。
 
 验证命令：
 
